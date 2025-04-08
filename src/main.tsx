@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
-import { HomePage, SignInPage, SignUpPage } from './pages/index.ts'
+import { DashboardPage, HomePage, SignInPage, SignUpPage } from './pages/index.ts'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -11,6 +11,7 @@ const router = createBrowserRouter(
       <Route path='' element={<HomePage />} />
       <Route path='login' element={<SignInPage />} />
       <Route path='signup' element={<SignUpPage />} />
+      <Route path='dashboard' element={<DashboardPage />} />
     </Route>
   )
 )
