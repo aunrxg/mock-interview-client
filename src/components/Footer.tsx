@@ -8,7 +8,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link to="/" className="text-2xl font-bold">
-              InterviewAI
+              GeekCodes
             </Link>
             <p className="mt-4 text-slate-400">
               Master your technical interviews with AI-powered practice and feedback.
@@ -81,7 +81,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-slate-400">© {new Date().getFullYear()} InterviewAI. All rights reserved.</p>
+          <p className="text-slate-400">© {new Date().getFullYear()} GeekCodes. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="#" className="text-slate-400 hover:text-white transition-colors">
               Twitter
