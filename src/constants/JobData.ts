@@ -1,0 +1,58 @@
+
+// Sample job data
+export const jobsData = [
+  {
+    id: 1,
+    title: "Frontend Developer",
+    company: "TechCorp",
+    location: "San Francisco, CA",
+    type: "Full-time",
+    description: "We're looking for a skilled Frontend Developer to join our team...",
+    skills: ["React", "TypeScript", "CSS"],
+  },
+  {
+    id: 2,
+    title: "Backend Engineer",
+    company: "DataSystems",
+    location: "New York, NY",
+    type: "Full-time",
+    description: "Join our backend team to build scalable services...",
+    skills: ["Node.js", "Python", "MongoDB"],
+  },
+  {
+    id: 3,
+    title: "Full Stack Developer",
+    company: "WebSolutions",
+    location: "Remote",
+    type: "Contract",
+    description: "Looking for a versatile developer who can work across the stack...",
+    skills: ["React", "Node.js", "PostgreSQL"],
+  },
+  {
+    id: 4,
+    title: "Mobile Developer",
+    company: "AppWorks",
+    location: "Seattle, WA",
+    type: "Full-time",
+    description: "Help us build the next generation of mobile applications...",
+    skills: ["React Native", "Swift", "Kotlin"],
+  },
+  {
+    id: 5,
+    title: "DevOps Engineer",
+    company: "CloudTech",
+    location: "Austin, TX",
+    type: "Full-time",
+    description: "Join our DevOps team to improve our infrastructure and deployment processes...",
+    skills: ["AWS", "Docker", "Kubernetes"],
+  },
+  {
+    id: 6,
+    title: "Data Scientist",
+    company: "AnalyticsPro",
+    location: "Boston, MA",
+    type: "Full-time",
+    description: "Use your expertise in data analysis to drive business decisions...",
+    skills: ["Python", "TensorFlow", "SQL"],
+  },
+]
