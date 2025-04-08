@@ -3,13 +3,19 @@ import type React from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { useAuth } from "@/context/AuthContext"
 
 export default function LoginForm() {
+  const { login } = useAuth()
   const navigate = useNavigate()
+  // const [emailOrUsername, setEmailOrUsername] = useState('')
+  // const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
-    email: "",
+    emailOrUsername: "",
     password: "",
   })
 
@@ -24,11 +30,13 @@ export default function LoginForm() {
 
     // Simulate API call
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      // In a real app, you would authenticate with your backend here
-      navigate('/dashboard')
+      const emailOrUsername = formData.emailOrUsername
+      const password = formData.password
+      await login(emailOrUsername, password)
+      navigate('/app/dashboard')
     } catch (error) {
       console.error("Login failed:", error)
+      setError('Login failed. Please check your credentials.')
     } finally {
       setIsLoading(false)
     }
@@ -42,12 +50,12 @@ export default function LoginForm() {
             Email address
           </label>
           <input
-            id="email"
-            name="email"
+            id="emailOrUsername"
+            name="emailOrUsername"
             type="email"
             autoComplete="email"
             required
-            value={formData.email}
+            value={formData.emailOrUsername}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-slate-500 focus:border-slate-500"
             placeholder="you@example.com"
@@ -120,6 +128,7 @@ export default function LoginForm() {
             "Sign in"
           )}
         </button>
+        {error && <p>{error}</p>}
       </div>
     </form>
   )

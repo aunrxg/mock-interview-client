@@ -1,20 +1,33 @@
-import { Outlet } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
-import { Footer, Header } from './components'
+import { DashboardPage, HomePage, SignInPage, SignUpPage } from './pages'
+import PublicLayout from './layout/PublicLayout'
+import PrivateLayout from './layout/PrivateLayout'
 // import Layout from './Layout'
 
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <PublicLayout />,
+    children: [
+      { path: '/', element: <HomePage /> },
+      { path: '/login', element: <SignInPage /> },
+      { path: '/signup', element: <SignUpPage /> },
+    ],
+  },
+  {
+    path: '/app',
+    element: <PrivateLayout />,
+    children: [
+      { path: 'dashboard', element: <DashboardPage /> },
+    ],
+  },
+])
+
 function App() {
 
-  return (
-    <>
-      <main className='min-h-screen flex flex-col'>
-        <Header />
-        <Outlet />
-        <Footer />
-      </main>
-    </>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App
