@@ -1,54 +1,57 @@
-# React + TypeScript + Vite
+# 🧠 GeekCodes — AI Mock Interview System (UI)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the frontend UI for **GeekCodes**, an AI-powered mock interview platform. This app helps developers practice coding interviews by simulating real job-based interview experiences with instant AI feedback and better solutions.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+- ⚡️ Fast Vite-powered React UI
+- 🎨 Tailwind CSS for modern styling
+- 🧱 Component system powered by `shadcn/ui`
+- 👨‍💻 LeetCode-style coding interface
+- 🤖 AI-generated feedback after code submission
+- 📄 Job listing & mock interview flow
+- 🔐 JWT-based auth ready (Login & Signup UI)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 📁 Folder Structure
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 🧪 Tech Stack
+
+| Tech              | Purpose                              |
+|-------------------|--------------------------------------|
+| React (via Vite)  | Fast, modern frontend framework      |
+| Tailwind CSS      | Utility-first CSS framework          |
+| shadcn/ui         | Reusable components (Radix UI base)  |
+| TypeScript        | Static typing for safety             |
+| React Router      | Page routing                         |
+| Context (opt.)    | Lightweight state management         |
+| Monaco/Sandpack   | Code editor integration              |
+
+---
+
+## 🚧 Roadmap (Milestones)
+
+- [x] Landing page with hero, features, and CTA
+- [x] Login and Signup pages
+- [x] Dashboard with job listings
+- [x] Coding interface for mock interviews
+- [x] AI feedback panel after code submission
+- [ ] Add mobile responsiveness
+- [ ] Add skeleton loaders & empty states
+- [ ] Polish for portfolio (animations, testimonials, etc.)
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-username/geekcodes-ui.git
+cd geekcodes-ui
