@@ -53,5 +53,5 @@ Welcome to the frontend UI for **GeekCodes**, an AI-powered mock interview platf
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/geekcodes-ui.git
+git clone https://github.com/aunrxg/geekcodes-ui.git
 cd geekcodes-ui
