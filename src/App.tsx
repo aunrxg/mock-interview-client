@@ -3,17 +3,24 @@ import './App.css'
 import { DashboardPage, HomePage, SignInPage, SignUpPage } from './pages'
 import PublicLayout from './layout/PublicLayout'
 import PrivateLayout from './layout/PrivateLayout'
+import RootLayout from './layout/RootLayout'
 // import Layout from './Layout'
 
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <PublicLayout />,
+    element: <RootLayout />,
     children: [
-      { path: '/', element: <HomePage /> },
-      { path: '/login', element: <SignInPage /> },
-      { path: '/signup', element: <SignUpPage /> },
+      {
+        path: '/',
+        element: <PublicLayout />,
+        children: [
+          { path: '/', element: <HomePage /> },
+          { path: '/login', element: <SignInPage /> },
+          { path: '/signup', element: <SignUpPage /> },
+        ],
+      },
     ],
   },
   {
@@ -26,8 +33,9 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-
-  return <RouterProvider router={router} />
+  return (
+    <RouterProvider router={router} />
+  )
 }
 
 export default App

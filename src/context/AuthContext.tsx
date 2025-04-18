@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import api from "../api/AxiosInstance"
 import {   AuthContextType } from "@/types";
-import { useLocation, useNavigate } from "react-router-dom";
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -15,28 +14,24 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const navigate = useNavigate()
-  const location = useLocation()
-
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await api.get('/users/me')
-        setUser(res.data.user)
-        if(res.data.user && location.pathname === '/') {
-          navigate('/app/dashboard')
-        }
+        console.log("Fetching user...");
+        const res = await api.get("/users/me");
+        console.log("Response from /me:", res.data);
+        setUser(res.data.user);
       } catch (err) {
-        console.error("error while getting current user: ", err)
-        setUser(null)
+        console.error("Error while getting current user:", err);
+        setUser(null);
       } finally {
-        setLoading(false)
+        setLoading(false);
+        console.log("Loading set to false");
       }
     }
 
     fetchUser()
-  }, [navigate, location.pathname])
+  }, [])
 
   const login = async (emailOrUsername: string, password: string) => {
     try {
@@ -53,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
   }
 
   const logout = async () => {
-    await api.post('/users/login')
+    await api.post('/users/logout')
     setUser(null)
   }
 

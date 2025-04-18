@@ -27,7 +27,7 @@ export default function SignupForm() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500))
       // In a real app, you would register with your backend here
-      navigate("/dashboard")
+      navigate("/app/dashboard")
     } catch (error) {
       console.error("Signup failed:", error)
     } finally {
