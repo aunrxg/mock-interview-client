@@ -1,4 +1,4 @@
-import DashboardHeader from "@/components/dashboard/DashboardHeader"
+// import DashboardHeader from "@/components/dashboard/DashboardHeader"
 import JobListings from "@/components/dashboard/JobListing"
 import OnboardingPrompt from "@/components/dashboard/OnBoardPrompt"
 import { Search } from "lucide-react"
@@ -6,7 +6,7 @@ import { Search } from "lucide-react"
 export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <DashboardHeader />
+      {/* <DashboardHeader /> */}
 
       <main className="container-custom py-8">
         {/* Onboarding Prompt */}

@@ -16,22 +16,31 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      console.log("🔄 [AuthContext] fetchUser running...");
+      console.log("🔍 Current user:", user);
+  
+      // Don't fetch if already logged in
+      if (user) {
+        setLoading(false);
+        console.log("✅ Skipping fetchUser because user already exists.");
+        return;
+      }
+  
       try {
-        console.log("Fetching user...");
         const res = await api.get("/users/me");
-        console.log("Response from /me:", res.data);
-        setUser(res.data.user);
+        setUser(res.data);
+        console.log("✅ /users/me success:", res.data);
       } catch (err) {
-        console.error("Error while getting current user:", err);
+        console.error("❌ /users/me error:", err);
         setUser(null);
       } finally {
         setLoading(false);
-        console.log("Loading set to false");
+        console.log("✅ loading set to false");
       }
-    }
-
-    fetchUser()
-  }, [])
+    };
+  
+    fetchUser();
+  }, [user])
 
   const login = async (emailOrUsername: string, password: string) => {
     try {
@@ -40,7 +49,8 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
         : { username: emailOrUsername, password }
 
       const res = await api.post('/users/login', payload)
-      setUser(res.data.user) // only if successful
+      setUser(res.data) // only if successful
+      setLoading(false)
     } catch (err) {
       console.error('Login error:', err)
       throw err // rethrow so the form can catch it

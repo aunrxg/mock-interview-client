@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { Header, Footer } from "@/components";
-import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function PublicLayout() {
   const { loading, isLoggedIn } = useAuth()
 
-  if(loading) return <div>Loading...</div>
+  if(loading) return <div>Loading The public page...</div>
 
   if(isLoggedIn) {
     return <Navigate to='/app/dashboard' replace />
@@ -14,9 +14,7 @@ export default function PublicLayout() {
     <>
       <Header />
       <main>
-        <AuthProvider>
-          <Outlet />
-        </AuthProvider>
+        <Outlet />
       </main>
       <Footer />
     </>
