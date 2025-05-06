@@ -12,3 +12,11 @@ export type AuthContextType = {
   loading: boolean
   isLoggedIn: boolean
 }
+
+export type JobType = {
+  _id: string;
+  title: string;
+  description: string;
+  location: string;
+  company: string;
+}
