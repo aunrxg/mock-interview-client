@@ -11,6 +11,7 @@ export default function SignupForm() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    username: "",
     password: "",
   })
 
@@ -40,7 +41,7 @@ export default function SignupForm() {
       <div className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-slate-700">
-            Full name
+            Full Name
           </label>
           <input
             id="name"
@@ -69,6 +70,23 @@ export default function SignupForm() {
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-slate-500 focus:border-slate-500"
             placeholder="you@example.com"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="username" className="block text-sm font-medium text-slate-700">
+            Username
+          </label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            autoComplete="username"
+            required
+            value={formData.username}
+            onChange={handleChange}
+            className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-slate-500 focus:border-slate-500"
+            placeholder="john@01"
           />
         </div>
 
