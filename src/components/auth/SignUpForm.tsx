@@ -3,8 +3,10 @@ import type React from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { useAuth } from "@/context/AuthContext"
 
 export default function SignupForm() {
+  const { register } = useAuth()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -26,8 +28,8 @@ export default function SignupForm() {
 
     // Simulate API call
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      // In a real app, you would register with your backend here
+      const { name, email, username, password } = formData
+      await register(name, email, username, password)
       navigate("/app/dashboard")
     } catch (error) {
       console.error("Signup failed:", error)
