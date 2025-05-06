@@ -9,7 +9,7 @@ import { Link, useParams } from "react-router-dom"
 export default function JobDetailPage() {
 
     const { id } = useParams()
-    console.log(id)
+    // console.log(id)
     const [job, setJob] = useState<JobType | null>(null)
     const [loading, setLoading] = useState(true)
 

@@ -26,3 +26,18 @@ export type JobType = {
   location: string;
   company: string;
 }
+
+type TestCases = {
+  input: string;
+  expectedOutput: string;
+  explanation: string;
+}
+
+export type ProblemType = {
+  difficulty: string;
+  examples: [TestCases];
+  constraints: [string];
+  title: string;
+  description: string;
+  testCases: [TestCases];
+}

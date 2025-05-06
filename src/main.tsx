@@ -5,7 +5,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RootLayout from './layout/RootLayout.tsx'
 import PublicLayout from './layout/PublicLayout.tsx'
-import { HomePage, DashboardPage, SignInPage, SignUpPage, JobDetailPage } from './pages/index.ts'
+import { HomePage, DashboardPage, SignInPage, SignUpPage, JobDetailPage, InterviewPage } from './pages/index.ts'
 import PrivateLayout from './layout/PrivateLayout.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 
@@ -30,7 +30,8 @@ const router = createBrowserRouter([
     element: <PrivateLayout />,
     children: [
       { path: 'dashboard', element: <DashboardPage /> },
-      { path: 'job/:id', element: <JobDetailPage /> }
+      { path: 'job/:id', element: <JobDetailPage /> },
+      { path: 'interview/:id', element: <InterviewPage /> },
     ],
   },
 ])
