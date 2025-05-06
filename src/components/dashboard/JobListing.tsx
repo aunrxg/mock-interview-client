@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
 // import { jobsData } from "@/constants/JobData"
 import { fetchJobs } from "@/api/AxiosInstance"
@@ -10,6 +10,7 @@ export default function JobListings() {
   const [hoveredJob, setHoveredJob] = useState<string | null>(null)
   const [jobs, setJobs] = useState<JobType[]>([])
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -63,7 +64,7 @@ export default function JobListings() {
             </div>
 
             <div className="flex justify-between items-center">
-              <Link to={`/job/${job._id}`} className="text-slate-600 hover:text-slate-900 text-sm font-medium">
+              <Link to={`/app/job/${job._id}`} className="text-slate-600 hover:text-slate-900 text-sm font-medium">
                 View Details
               </Link>
 
@@ -71,7 +72,7 @@ export default function JobListings() {
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   hoveredJob === job._id ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-700"
                 }`}
-                onClick={() => (window.location.href = `/interview/${job._id}`)}
+                onClick={() => (navigate(`/app/interview/${job._id}`))}
               >
                 Start Interview
                 {hoveredJob === job._id && <ArrowRight className="ml-2 h-4 w-4 inline" />}
