@@ -5,4 +5,10 @@ const api = axios.create({
   withCredentials: true, 
 });
 
+export const fetchJobs = async () => {
+  const res = await api.get("/jobs")
+  console.log("Jobs: ", res.data.data)
+  return res.data;
+}
+
 export default api;
