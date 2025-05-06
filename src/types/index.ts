@@ -17,6 +17,10 @@ export type JobType = {
   _id: string;
   title: string;
   description: string;
+  responsibilities: [string],
+  requirements: [string];
+  postedDate: string;
+  salary: string;
   skills: [string];
   type: string;
   location: string;
