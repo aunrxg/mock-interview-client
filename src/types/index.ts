@@ -17,6 +17,8 @@ export type JobType = {
   _id: string;
   title: string;
   description: string;
+  skills: [string];
+  type: string;
   location: string;
   company: string;
 }
