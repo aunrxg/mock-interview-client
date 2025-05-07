@@ -1,15 +1,21 @@
 import { fetchJobById } from "@/api/AxiosInstance";
-import CodeEditor from "@/components/interview/CodeEditor";
+import MonacoEditor from "@/components/interview/CodeEditor";
+// import CodeEditor from "@/components/interview/CodeEditor";
 import TestCases from "@/components/interview/TestCase";
 import { ProblemType } from "@/types";
 import { ArrowLeft, ChevronUp, Clock, MessageSquare, Play, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "@/api/AxiosInstance";
 
 
 export default function InterviewPage() {
 
   const { id } = useParams()
+  if(!id) {
+    return;
+  }
+  const navigate = useNavigate()
   
   const [problem, setProblem] = useState<ProblemType | null>(null)
   const [loading, setLoading] = useState(true)
@@ -23,7 +29,7 @@ export default function InterviewPage() {
   useEffect(() => {
     const loadProblem = async () => {
       try {
-        const response = await fetchJobById(id as string)
+        const response = await fetchJobById(id)
         console.log("Response problem :", response.data.question)
         setProblem(response.data.question)
       } catch (error) {
@@ -50,8 +56,17 @@ export default function InterviewPage() {
   const handleSubmit = () => {
     setIsRunning(true)
 
-    setTimeout(() => {
+    setTimeout(async () => {
       console.log("sumission success here")
+      console.log("Code : ", code)
+      try {
+        const payload = { jobId: id, code, language }
+        console.log(payload)
+        const res = await api.post('/submit', payload)
+        console.log("Response : ", res.data)
+      } catch (error) {
+        console.error("failed to submit: ", error)
+      }
       setTestResults([])
       setIsRunning(false)
     }, 1500);
@@ -66,9 +81,9 @@ export default function InterviewPage() {
       {/* Header */}
       <header className="bg-slate-900 text-white px-4 py-3 flex items-center justify-between">
         <div className="flex items-center">
-          <Link to={`/interview/${id}`} className="mr-4 text-slate-300 hover:text-white">
+          <button onClick={() => navigate(-1)} className="mr-4 text-slate-300 hover:text-white">
             <ArrowLeft className="h-5 w-5" />
-          </Link>
+          </button>
           <h1 className="text-lg font-bold">{problem.title}</h1>
           <span
             className={`ml-3 px-2 py-1 text-xs rounded-full ${
@@ -128,7 +143,7 @@ export default function InterviewPage() {
                   className={`px-4 py-3 text-sm font-medium ${activeTab === "submissions" ? "text-slate-900 border-b-2 border-slate-900" : "text-slate-600 hover:text-slate-900"}`}
                   onClick={() => setActiveTab("submissions")}
                 >
-                  Solution
+                  Submissions
                 </button>
                 <button
                   className={`px-4 py-3 text-sm font-medium ${activeTab === "discussion" ? "text-slate-900 border-b-2 border-slate-900" : "text-slate-600 hover:text-slate-900"}`}
@@ -220,7 +235,7 @@ export default function InterviewPage() {
 
         {/* Code Editor Panel */}
         <div className={`flex-1 flex flex-col ${isDescriptionExpanded ? "md:w-3/5" : "md:flex-1"}`}>
-          <CodeEditor code={code} language={language} setCode={setCode} />
+          <MonacoEditor value={code} language={language} onChange={(value) => setCode(value || "")} />
 
           <div className="border-t border-slate-200">
             <div className="flex items-center justify-between px-4 py-2 bg-slate-50">

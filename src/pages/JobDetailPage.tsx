@@ -3,12 +3,14 @@ import { fetchJobById } from "@/api/AxiosInstance"
 import { JobType } from "@/types"
 import { ArrowLeft, Building, Clock, MapPin } from "lucide-react"
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
 
 export default function JobDetailPage() {
 
     const { id } = useParams()
+    const navigate = useNavigate()
+
     // console.log(id)
     const [job, setJob] = useState<JobType | null>(null)
     const [loading, setLoading] = useState(true)
@@ -36,10 +38,10 @@ export default function JobDetailPage() {
           {/* <DashboardHeader /> */}
 
           <main className="container-custom py-8">
-            <Link to="/app/dashboard" className="inline-flex items-center text-slate-600 hover:text-slate-900 mb-6">
+            <button onClick={() => navigate(-1)} className="inline-flex items-center text-slate-600 hover:text-slate-900 mb-6">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to job listings
-            </Link>
+            </button>
 
             <div className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
