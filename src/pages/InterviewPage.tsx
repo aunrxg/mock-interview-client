@@ -24,13 +24,13 @@ export default function InterviewPage() {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true)
   const [activeTab, setActiveTab] = useState<"description" | "submissions" | "discussion">("description")
   const [isRunning, setIsRunning] = useState(false)
-  const [testResults, setTestResults] = useState<Array<{ passed: boolean, output: string, error: string }>>([])
+  const [testResults, setTestResults] = useState<Array<{ passed: boolean, actualOutput: string, error: string }>>([])
 
   useEffect(() => {
     const loadProblem = async () => {
       try {
         const response = await fetchJobById(id)
-        console.log("Response problem :", response.data.question)
+        // console.log("Response problem :", response.data.question)
         setProblem(response.data.question)
       } catch (error) {
         console.error("failed fetching problem : ", error)
@@ -58,17 +58,17 @@ export default function InterviewPage() {
 
     setTimeout(async () => {
       console.log("sumission success here")
-      console.log("Code : ", code)
+      // console.log("Code : ", code)
       try {
         const payload = { jobId: id, code, language }
-        console.log(payload)
+        // console.log(payload)
         const res = await api.post('/submit', payload)
         console.log("Response : ", res.data)
+        setTestResults(res.data.data.testResults)
+        setIsRunning(false)
       } catch (error) {
         console.error("failed to submit: ", error)
       }
-      setTestResults([])
-      setIsRunning(false)
     }, 1500);
   }
 
