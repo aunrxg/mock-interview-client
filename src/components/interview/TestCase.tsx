@@ -8,7 +8,7 @@ interface TestCases {
 
 interface TestResult {
   passed: boolean
-  output: string
+  actualOutput: string
   error: string
 }
 
@@ -62,7 +62,7 @@ export default function TestCases({ testCases, results }: TestCasesProps) {
                     result ? (result.passed ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800") : "bg-slate-100"
                   }`}
                 >
-                  {result ? result.output : "Run code to see output"}
+                  {result ? result.actualOutput : "Run code to see output"}
                 </div>
               </div>
             </div>

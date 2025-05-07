@@ -17,25 +17,25 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      console.log("[AuthContext] fetchUser running...");
-      console.log("Current user:", user);
+      // console.log("[AuthContext] fetchUser running...");
+      // console.log("Current user:", user);
   
       if (user) {
         setLoading(false);
-        console.log("Skipping fetchUser because user already exists.");
+        // console.log("Skipping fetchUser because user already exists.");
         return;
       }
   
       try {
         const res = await api.get("/users/me");
         setUser(res.data);
-        console.log("/users/me success:", res.data);
+        // console.log("/users/me success:", res.data);
       } catch (err) {
         console.error("/users/me error:", err);
         setUser(null);
       } finally {
         setLoading(false);
-        console.log("loading set to false");
+        // console.log("loading set to false");
       }
     };
   
@@ -68,10 +68,11 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
 
       const res = await api.post('/users/register', payload)
       setUser(res.data)
-      setLoading(false)
     } catch (error) {
       console.error('Register error: ', error)
       throw error;
+    } finally {
+      setLoading(false)
     }
   }
 

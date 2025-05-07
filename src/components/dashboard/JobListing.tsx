@@ -16,7 +16,7 @@ export default function JobListings() {
     const loadJobs = async () => {
       try {
         const data = await fetchJobs();
-        console.log("Fetched jobs data:", data.data);
+        // console.log("Fetched jobs data:", data.data);
         if (!Array.isArray(data.data)) {
           console.error("Expected an array from fetchJobs but got:", data.data);
         } else {

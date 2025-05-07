@@ -4,10 +4,10 @@ import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import { Footer } from "@/components";
 
 export default function PrivateLayout () {
-  const { loading, isLoggedIn, user } = useAuth()
+  const { loading, isLoggedIn } = useAuth()
   const location = useLocation()
 
-  console.log("🔐 PrivateLayout - loading:", loading, "| isLoggedIn:", isLoggedIn, "| user:", user);
+  // console.log("🔐 PrivateLayout - loading:", loading, "| isLoggedIn:", isLoggedIn, "| user:", user);
 
   const hideLayoutFor = ["/app/interview", "/app/interview/:id"]
 

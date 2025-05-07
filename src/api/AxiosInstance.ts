@@ -7,13 +7,13 @@ const api = axios.create({
 
 export const fetchJobs = async () => {
   const res = await api.get("/jobs")
-  console.log("Jobs: ", res.data.data)
+  // console.log("Jobs: ", res.data.data)
   return res.data
 }
 
 export const fetchJobById = async(id: string) => {
   const res = await api.get(`/jobs/${id}`)
-  console.log("Job: ", res.data)
+  // console.log("Job: ", res.data)
   return res.data
 }
 export default api;
