@@ -7,7 +7,7 @@ export default function SignUp() {
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-sm">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-slate-900">Create an account</h1>
-          <p className="mt-2 text-slate-600">Join GeekCodes to start practicing for your technical interviews</p>
+          <p className="mt-2 text-slate-600">Join GeekCodesAI to start practicing for your technical interviews</p>
         </div>
 
         <SignupForm />

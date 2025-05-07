@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import api from "../api/AxiosInstance"
-import {   AuthContextType, User } from "@/types";
+import { AuthContextType } from "@/types";
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
   
       try {
         const res = await api.get("/users/me");
-        setUser(res.data);
+        setUser(res.data.data);
         // console.log("/users/me success:", res.data);
       } catch (err) {
         console.error("/users/me error:", err);

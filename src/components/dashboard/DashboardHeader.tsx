@@ -14,7 +14,7 @@ export default function DashboardHeader() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/dashboard" className="text-2xl font-bold text-slate-900">
-            GeeksCode!
+            GeekCodesAI
           </Link>
 
           {/* Desktop Navigation */}
@@ -50,7 +50,7 @@ export default function DashboardHeader() {
               <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
                 <User className="h-5 w-5 text-slate-600" />
               </div>
-              <span className="font-medium">{ user?.data.fullName }</span>
+              <span className="font-medium">{ user?.fullName }</span>
             </div>
           </div>
 
@@ -105,7 +105,7 @@ export default function DashboardHeader() {
                   <User className="h-5 w-5 text-slate-600" />
                 </div>
                 <span className="font-medium">
-                  { user?.data.username }
+                  { user?.fullName }
                 </span>
               </div>
             </nav>

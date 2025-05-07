@@ -1,6 +1,6 @@
-# 🧠 GeekCodes — AI Mock Interview System (UI)
+# 🧠 GeekCodesAI — AI Mock Interview System (UI)
 
-Welcome to the frontend UI for **GeekCodes**, an AI-powered mock interview platform. This app helps developers practice coding interviews by simulating real job-based interview experiences with instant AI feedback and better solutions.
+Welcome to the frontend UI for **GeekCodesAI**, an AI-powered mock interview platform. This app helps developers practice coding interviews by simulating real job-based interview experiences with instant AI feedback and better solutions.
 
 ---
 
@@ -53,5 +53,5 @@ Welcome to the frontend UI for **GeekCodes**, an AI-powered mock interview platf
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/aunrxg/geekcodes-ui.git
-cd geekcodes-ui
+git clone https://github.com/aunrxg/GeekCodesAI-ui.git
+cd GeekCodesAI-ui

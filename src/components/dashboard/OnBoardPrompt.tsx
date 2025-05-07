@@ -21,7 +21,7 @@ export default function OnboardingPrompt() {
         </div>
 
         <div className="flex-1">
-          <h2 className="text-xl font-bold text-slate-900 mb-2">Welcome to InterviewAI, John!</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">Welcome to GeekCodesAI, John!</h2>
           <p className="text-slate-600 mb-4">
             Ready to ace your next technical interview? Start by selecting a job role below that matches your career
             goals, and begin practicing with our AI interviewer.

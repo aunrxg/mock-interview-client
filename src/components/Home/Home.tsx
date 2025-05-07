@@ -9,7 +9,7 @@ export default function Home() {
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
-              Ace Your Next Interview with GeekCodes
+              Ace Your Next Interview with GeekCodesAI
             </h1>
             <p className="text-lg md:text-xl text-slate-600 mb-8">
               Mock technical interviews with AI-powered feedback to help you master your skills.
@@ -74,7 +74,7 @@ export default function Home() {
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Choose GeekCodes?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Choose GeekCodesAI?</h2>
               <ul className="space-y-4">
                 {[
                   "Realistic interview simulations with industry-specific questions",
