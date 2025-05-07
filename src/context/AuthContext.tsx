@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import api from "../api/AxiosInstance"
-import {   AuthContextType } from "@/types";
+import {   AuthContextType, User } from "@/types";
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
   useEffect(() => {
     const fetchUser = async () => {
       // console.log("[AuthContext] fetchUser running...");
-      // console.log("Current user:", user);
+      console.log("Current user:", user);
   
       if (user) {
         setLoading(false);

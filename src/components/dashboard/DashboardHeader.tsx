@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { Bell, Menu, MessageSquare, Search, User, X } from "lucide-react"
+import { Bell, Menu, User, X } from "lucide-react"
+import { useAuth } from "@/context/AuthContext"
 
 export default function DashboardHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { user } = useAuth()
+  // console.log("user: ", user?.data.username)
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-10">
@@ -11,43 +14,43 @@ export default function DashboardHeader() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/dashboard" className="text-2xl font-bold text-slate-900">
-            InterviewAI
+            GeeksCode!
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/dashboard" className="text-slate-900 font-medium">
+            <Link to="/app/dashboard" className="text-slate-900 font-medium">
               Dashboard
             </Link>
-            <Link to="/interviews" className="text-slate-600 hover:text-slate-900 font-medium">
+            <Link to="/app/my-jobs" className="text-slate-600 hover:text-slate-900 font-medium">
               My Interviews
             </Link>
-            <Link to="/progress" className="text-slate-600 hover:text-slate-900 font-medium">
+            <Link to="/app/progress" className="text-slate-600 hover:text-slate-900 font-medium">
               Progress
             </Link>
-            <Link to="/resources" className="text-slate-600 hover:text-slate-900 font-medium">
+            <Link to="/app/resource" className="text-slate-600 hover:text-slate-900 font-medium">
               Resources
             </Link>
           </nav>
 
           {/* User Actions - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="p-2 rounded-full hover:bg-slate-100">
+            {/* <button className="p-2 rounded-full hover:bg-slate-100">
               <Search className="h-5 w-5 text-slate-600" />
-            </button>
+            </button> */}
             <button className="p-2 rounded-full hover:bg-slate-100 relative">
               <Bell className="h-5 w-5 text-slate-600" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
-            <button className="p-2 rounded-full hover:bg-slate-100">
+            {/* <button className="p-2 rounded-full hover:bg-slate-100">
               <MessageSquare className="h-5 w-5 text-slate-600" />
-            </button>
+            </button> */}
             <div className="h-8 w-px bg-slate-200"></div>
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
                 <User className="h-5 w-5 text-slate-600" />
               </div>
-              <span className="font-medium">John Doe</span>
+              <span className="font-medium">{ user?.data.fullName }</span>
             </div>
           </div>
 
@@ -61,47 +64,49 @@ export default function DashboardHeader() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-slate-200 mt-4">
             <nav className="flex flex-col space-y-4">
-              <Link to="/dashboard" className="text-slate-900 font-medium" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/app/dashboard" className="text-slate-900 font-medium" onClick={() => setIsMenuOpen(false)}>
                 Dashboard
               </Link>
               <Link
-                to="/interviews"
+                to="/app/my-jobs"
                 className="text-slate-600 hover:text-slate-900 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 My Interviews
               </Link>
               <Link
-                to="/progress"
+                to="/app/progress"
                 className="text-slate-600 hover:text-slate-900 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Progress
               </Link>
               <Link
-                to="/resources"
+                to="/app/resources"
                 className="text-slate-600 hover:text-slate-900 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Resources
               </Link>
               <div className="pt-2 flex items-center space-x-4">
-                <button className="p-2 rounded-full hover:bg-slate-100">
+                {/* <button className="p-2 rounded-full hover:bg-slate-100">
                   <Search className="h-5 w-5 text-slate-600" />
-                </button>
+                </button> */}
                 <button className="p-2 rounded-full hover:bg-slate-100 relative">
                   <Bell className="h-5 w-5 text-slate-600" />
                   <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                 </button>
-                <button className="p-2 rounded-full hover:bg-slate-100">
+                {/* <button className="p-2 rounded-full hover:bg-slate-100">
                   <MessageSquare className="h-5 w-5 text-slate-600" />
-                </button>
+                </button> */}
               </div>
               <div className="flex items-center space-x-2 pt-2">
                 <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
                   <User className="h-5 w-5 text-slate-600" />
                 </div>
-                <span className="font-medium">John Doe</span>
+                <span className="font-medium">
+                  { user?.data.username }
+                </span>
               </div>
             </nav>
           </div>
