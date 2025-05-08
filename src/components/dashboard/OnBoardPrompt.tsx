@@ -49,9 +49,9 @@ export default function OnboardingPrompt() {
           </div>
         </div>
 
-        <div className="md:self-center">
+        {/* <div className="md:self-center">
           <button className="btn-primary whitespace-nowrap">Take a tour</button>
-        </div>
+        </div> */}
       </div>
     </div>
   )

@@ -6,6 +6,11 @@ import { useAuth } from "@/context/AuthContext"
 export default function DashboardHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user } = useAuth()
+  let fullName = ""
+  if(user?.fullName) {
+    fullName = user.fullName.trim().split(" ")[0]
+    console.log(fullName)
+  }
   // console.log("user: ", user?.data.username)
 
   return (
@@ -25,8 +30,8 @@ export default function DashboardHeader() {
             <Link to="/app/my-jobs" className="text-slate-600 hover:text-slate-900 font-medium">
               My Interviews
             </Link>
-            <Link to="/app/progress" className="text-slate-600 hover:text-slate-900 font-medium">
-              Progress
+            <Link to="/app/problemset" className="text-slate-600 hover:text-slate-900 font-medium">
+              Practice
             </Link>
             <Link to="/app/resource" className="text-slate-600 hover:text-slate-900 font-medium">
               Resources
@@ -38,7 +43,7 @@ export default function DashboardHeader() {
             {/* <button className="p-2 rounded-full hover:bg-slate-100">
               <Search className="h-5 w-5 text-slate-600" />
             </button> */}
-            <button className="p-2 rounded-full hover:bg-slate-100 relative">
+            <button className="p-2 rounded-full hover:bg-slate-100 relative cursor-pointer">
               <Bell className="h-5 w-5 text-slate-600" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
@@ -47,10 +52,10 @@ export default function DashboardHeader() {
             </button> */}
             <div className="h-8 w-px bg-slate-200"></div>
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
+              <Link to='/app/profile' className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center cursor-pointer">
                 <User className="h-5 w-5 text-slate-600" />
-              </div>
-              <span className="font-medium">{ user?.fullName }</span>
+              </Link>
+              <span className="font-medium">{ fullName }</span>
             </div>
           </div>
 

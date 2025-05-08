@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Menu, X } from "lucide-react"
+import { Link as ScrollLink} from "react-scroll"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -19,13 +20,13 @@ export default function Header() {
             <Link to="/" className="text-slate-700 hover:text-slate-900 font-medium">
               Home
             </Link>
-            <Link to="/features" className="text-slate-700 hover:text-slate-900 font-medium">
+            <ScrollLink to="features" smooth={true} duration={500} className="text-slate-700 hover:text-slate-900 font-medium cursor-pointer">
               Features
-            </Link>
-            <Link to="/about" className="text-slate-700 hover:text-slate-900 font-medium">
+            </ScrollLink>
+            <Link to="https://aunrxg.vercel.app" className="text-slate-700 hover:text-slate-900 font-medium">
               About
             </Link>
-            <Link to="/contact" className="text-slate-700 hover:text-slate-900 font-medium">
+            <Link to="https://aunrxg.vercel.app/contacts" className="text-slate-700 hover:text-slate-900 font-medium">
               Contact
             </Link>
           </nav>
@@ -65,14 +66,14 @@ export default function Header() {
                 Features
               </Link>
               <Link
-                to="/about"
+                to="https://aunrxg.vercel.app"
                 className="text-slate-700 hover:text-slate-900 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
               </Link>
               <Link
-                to="/contact"
+                to="https://aunrxg.vercel.app/contacts"
                 className="text-slate-700 hover:text-slate-900 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >

@@ -23,7 +23,7 @@ export default function Home() {
       </section>
 
       {/* Feature section */}
-      <section className="section bg-white">
+      <section id='features' className="section bg-white">
         <div className="container-custom">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
