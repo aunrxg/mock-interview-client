@@ -3,6 +3,7 @@ export type User = {
   fullName: string
   username: string
   email: string
+  jobs: string
 }
 
 export type AuthContextType = {
@@ -10,6 +11,7 @@ export type AuthContextType = {
   login: (emailOrUsername: string, password: string) => Promise<void>
   logout: () => Promise<void>
   register: (fullName: string, email: string, username: string, password: string) => Promise<void>
+  saveJob: (userId: string, jobId: string) => Promise<void>
   loading: boolean
   isLoggedIn: boolean
 }

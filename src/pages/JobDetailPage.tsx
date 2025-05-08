@@ -1,4 +1,5 @@
 import { fetchJobById } from "@/api/AxiosInstance"
+import { useAuth } from "@/context/AuthContext"
 // import DashboardHeader from "@/components/dashboard/DashboardHeader"
 import { JobType } from "@/types"
 import { ArrowLeft, Building, Clock, MapPin } from "lucide-react"
@@ -10,6 +11,23 @@ export default function JobDetailPage() {
 
     const { id } = useParams()
     const navigate = useNavigate()
+    const { saveJob, user } = useAuth()
+
+    let payload = { userId: "", jobId: "" }
+    if(user) {
+      payload.userId = user._id
+    }
+    if(id) {
+      payload.jobId = id
+    }
+    const handleSaveJob = async () => {
+      try {
+        console.log("save job called")
+        await saveJob(payload.userId, payload.jobId)
+      } catch (error) {
+        console.error("Error while saving job: ", error)
+      }
+    }
 
     // console.log(id)
     const [job, setJob] = useState<JobType | null>(null)
@@ -140,7 +158,7 @@ export default function JobDetailPage() {
                         Start Interview
                     </Link>
 
-                    <button className="w-full mt-3 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-2 rounded-md font-medium transition-colors">
+                    <button onClick={handleSaveJob} className="w-full mt-3 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-2 rounded-md font-medium transition-colors">
                         Save Job
                     </button>
                     </div>

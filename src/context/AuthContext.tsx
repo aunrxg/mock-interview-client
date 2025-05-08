@@ -7,6 +7,7 @@ const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: async () => {},
   register: async () => {},
+  saveJob: async () => {},
   loading: true,
   isLoggedIn: false,
 })
@@ -18,7 +19,7 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
   useEffect(() => {
     const fetchUser = async () => {
       // console.log("[AuthContext] fetchUser running...");
-      console.log("Current user:", user);
+      // console.log("Current user:", user);
   
       if (user) {
         setLoading(false);
@@ -76,8 +77,23 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
     }
   }
 
+  const saveJob = async (userId: string, jobId: string) => {
+    try {
+      const pyaload = { userId, jobId }
+
+      const res = await api.post('/users/save-job', pyaload)
+      setUser(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.error('could not save job: ', error)
+      throw error
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, loading, isLoggedIn: !!user }}>
+    <AuthContext.Provider value={{ user, login, logout, register, saveJob, loading, isLoggedIn: !!user }}>
       {children}
     </AuthContext.Provider>
   )
