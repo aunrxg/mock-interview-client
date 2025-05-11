@@ -28,7 +28,7 @@ export default function DashboardHeader() {
               Dashboard
             </Link>
             <Link to="/app/my-jobs" className="text-slate-600 hover:text-slate-900 font-medium">
-              My Interviews
+              My Jobs
             </Link>
             <Link to="/app/problemset" className="text-slate-600 hover:text-slate-900 font-medium">
               Practice
@@ -77,7 +77,7 @@ export default function DashboardHeader() {
                 className="text-slate-600 hover:text-slate-900 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                My Interviews
+                My Jobs
               </Link>
               <Link
                 to="/app/progress"

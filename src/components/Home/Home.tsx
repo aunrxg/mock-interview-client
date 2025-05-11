@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle } from 'lucide-react'
+import { Link as ScrollLink} from 'react-scroll'
 
 export default function Home() {
   return (
@@ -113,12 +114,14 @@ export default function Home() {
             >
               Start Practicing Now
             </Link>
-            <Link
-              to="/features"
-              className="bg-transparent text-white hover:bg-slate-800 border border-slate-700 px-6 py-3 rounded-md font-medium transition-colors"
+            <ScrollLink
+              to="features"
+              smooth={true}
+              duration={500}
+              className="bg-transparent text-white hover:bg-slate-800 border border-slate-700 px-6 py-3 rounded-md font-medium transition-colors cursor-pointer"
             >
               Learn More
-            </Link>
+            </ScrollLink>
           </div>
         </div>
       </section>

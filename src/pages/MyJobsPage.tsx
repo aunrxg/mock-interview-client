@@ -1,46 +1,80 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { ArrowRight, BookmarkX, Calendar, Search } from "lucide-react"
+import { useAuth } from "@/context/AuthContext"
+import { JobType } from "@/types"
+import { fetchJobById } from "@/api/AxiosInstance"
 // import DashboardHeader from "@/components/dashboard/DashboardHeader"
 
+// interface savedJobType {
+//   job: string;
+//   savedAt: Date;
+// }
+
 // Sample saved interviews data
-const savedInterviewsData = [
-  {
-    id: 1,
-    jobTitle: "Frontend Developer",
-    company: "TechCorp",
-    savedDate: "2023-05-15",
-    status: "Saved",
-    nextInterview: null,
-  },
-  {
-    id: 2,
-    jobTitle: "Backend Engineer",
-    company: "DataSystems",
-    savedDate: "2023-05-10",
-    status: "In Progress",
-    nextInterview: "2023-05-20",
-  },
-  {
-    id: 3,
-    jobTitle: "Full Stack Developer",
-    company: "WebSolutions",
-    savedDate: "2023-05-05",
-    status: "Completed",
-    nextInterview: null,
-    score: 85,
-  },
-]
+// const savedInterviewsData = [
+//   {
+//     id: 1,
+//     jobTitle: "Frontend Developer",
+//     company: "TechCorp",
+//     savedDate: "2023-05-15",
+//     status: "Saved",
+//     nextInterview: null,
+//   },
+//   {
+//     id: 2,
+//     jobTitle: "Backend Engineer",
+//     company: "DataSystems",
+//     savedDate: "2023-05-10",
+//     status: "In Progress",
+//     nextInterview: "2023-05-20",
+//   },
+//   {
+//     id: 3,
+//     jobTitle: "Full Stack Developer",
+//     company: "WebSolutions",
+//     savedDate: "2023-05-05",
+//     status: "Completed",
+//     nextInterview: null,
+//     score: 85,
+//   },
+// ]
 
 export default function MyJobsPage() {
-  const [jobs, setJobs] = useState(savedInterviewsData)
+
+  const { user } = useAuth()
+
+  const [jobs, setJobs] = useState<JobType[]>([])
+  const [savedJobIds, setSavedJobIds] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   // const [statusFilter, setStatusFilter] = useState<string | null>(null)
+  useEffect(() => {
+    if(user?.jobs) {
+      setSavedJobIds(user.jobs.map(job => job.job))
+    }
+
+  }, [user])
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const jobPromise = savedJobIds.map((jobId) => fetchJobById(jobId))
+        const jobResults = await Promise.all(jobPromise)
+        const jobDataArray = jobResults.map(res => res.data)
+        setJobs(jobDataArray)
+      } catch (error) {
+        console.error("Error while fetching jobs: ", error)
+      }
+    }
+    if(savedJobIds.length > 0) {
+      fetchJobs()
+    }
+  }, [savedJobIds])
 
   // Filter interviews based on search query and status filter
   const filteredJobs = jobs.filter((job) => {
     const matchesSearch =
-      job.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       job.company.toLowerCase().includes(searchQuery.toLowerCase())
 
     // const matchesStatus = statusFilter ? interview.status === statusFilter : true
@@ -50,8 +84,8 @@ export default function MyJobsPage() {
   })
 
   // Function to remove an interview
-  const removeInterview = (id: number) => {
-    setJobs(jobs.filter((job) => job.id !== id))
+  const removeInterview = (id: string) => {
+    setJobs(jobs.filter((job) => job._id !== id))
   }
 
   return (
@@ -109,18 +143,18 @@ export default function MyJobsPage() {
           <div className="space-y-4">
             {filteredJobs.map((job) => (
               <div
-                key={job.id}
+                key={job._id}
                 className="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow"
               >
                 <div className="flex flex-col md:flex-row justify-between">
                   <div>
-                    <h2 className="text-xl font-bold text-slate-900 mb-1">{job.jobTitle}</h2>
+                    <h2 className="text-xl font-bold text-slate-900 mb-1">{job.title}</h2>
                     <p className="text-slate-700 mb-2">{job.company}</p>
 
                     <div className="flex flex-wrap gap-4 text-sm text-slate-600 mb-4">
                       <div className="flex items-center">
                         <Calendar className="h-4 w-4 mr-1" />
-                        <span>Saved on {new Date(job.savedDate).toLocaleDateString()}</span>
+                        <span>Saved on {new Date(job.savedAt).toLocaleDateString()}</span>
                       </div>
 
                       {/* {job.nextInterview && (
@@ -152,7 +186,7 @@ export default function MyJobsPage() {
 
                   <div className="flex items-center gap-3 mt-4 md:mt-0">
                     <button
-                      onClick={() => removeInterview(job.id)}
+                      onClick={() => removeInterview(job._id)}
                       className="p-2 text-slate-400 hover:text-red-500 rounded-full hover:bg-slate-100"
                       title="Remove from saved"
                     >
@@ -160,7 +194,7 @@ export default function MyJobsPage() {
                     </button>
 
                     <Link
-                      to={`/app/interview/${job.id}`}
+                      to={`/app/interview/${job._id}`}
                       className="px-4 py-2 bg-slate-900 text-white rounded-md hover:bg-slate-800 flex items-center"
                     >
                       {/* {job.status === "Completed" ? "Review" : "Continue"} */}

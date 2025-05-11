@@ -3,7 +3,7 @@ export type User = {
   fullName: string
   username: string
   email: string
-  jobs: string
+  jobs: [{ job: string, savedAt: Date }]
 }
 
 export type AuthContextType = {
@@ -28,6 +28,7 @@ export type JobType = {
   type: string;
   location: string;
   company: string;
+  savedAt: Date
 }
 
 type TestCases = {
