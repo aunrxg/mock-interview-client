@@ -1,45 +1,20 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
-// import { jobsData } from "@/constants/JobData"
-import { fetchJobs } from "@/api/AxiosInstance"
 import { JobType } from "@/types"
 
 
-export default function JobListings() {
+export default function JobListings({ filteredJobs, loading }: { filteredJobs: JobType[], loading: boolean }) {
   const [hoveredJob, setHoveredJob] = useState<string | null>(null)
-  const [jobs, setJobs] = useState<JobType[]>([])
-  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const loadJobs = async () => {
-      try {
-        const data = await fetchJobs();
-        // console.log("Fetched jobs data:", data.data);
-        if (!Array.isArray(data.data)) {
-          console.error("Expected an array from fetchJobs but got:", data.data);
-        } else {
-          setJobs(data.data);
-        }
-        
-      } catch (error) {
-        console.error("Failed to fetch jobs: ", error)
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadJobs()
-  }, [])
-
-
   if (loading) return <div>Loading Jobs...</div>
-  if (!Array.isArray(jobs)) return <div>No jobs available.</div>
+  if (!Array.isArray(filteredJobs)) return <div>No jobs available.</div>
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {Array.isArray(jobs) && jobs.map((job) => (
+      {Array.isArray(filteredJobs) && filteredJobs.map((job) => (
         <div
           key={job._id}
           className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
