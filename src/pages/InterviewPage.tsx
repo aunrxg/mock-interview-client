@@ -3,10 +3,14 @@ import MonacoEditor from "@/components/interview/CodeEditor";
 // import CodeEditor from "@/components/interview/CodeEditor";
 import TestCases from "@/components/interview/TestCase";
 import { ProblemType } from "@/types";
-import { ArrowLeft, ChevronUp, Clock, MessageSquare, Play, Settings } from "lucide-react";
+import { ChevronUp, Play } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import api from "@/api/AxiosInstance";
+import Header from "@/components/interview/Header";
+import Description from "@/components/interview/Description";
+import Submission from "@/components/interview/Submission";
+import Discussion from "@/components/interview/Discussion";
 
 
 export default function InterviewPage() {
@@ -15,7 +19,6 @@ export default function InterviewPage() {
   if(!id) {
     return;
   }
-  const navigate = useNavigate()
   
   const [problem, setProblem] = useState<ProblemType | null>(null)
   const [loading, setLoading] = useState(true)
@@ -71,57 +74,11 @@ export default function InterviewPage() {
       }
     }, 1500);
   }
-
-  if(loading) return <div>loading problem....</div>
-  if(!problem) return <div>No problem found</div>
-
-
+  if(!problem) return <div>No problem found. (interview page)</div>
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
-      <header className="bg-slate-900 text-white px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center">
-          <button onClick={() => navigate(-1)} className="mr-4 text-slate-300 hover:text-white">
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <h1 className="text-lg font-bold">{problem.title}</h1>
-          <span
-            className={`ml-3 px-2 py-1 text-xs rounded-full ${
-              problem.difficulty === "Easy"
-                ? "bg-green-600"
-                : problem.difficulty === "Medium"
-                  ? "bg-yellow-600"
-                  : "bg-red-600"
-            }`}
-          >
-            {problem.difficulty}
-          </span>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center text-slate-300">
-            <Clock className="h-4 w-4 mr-1" />
-            <span className="text-sm">25:00</span>
-          </div>
-
-          <select
-            value={language}
-            onChange={(e) => {
-              setLanguage(e.target.value as "javascript" | "python" | "java")
-              // setCode(problem.starterCode[e.target.value as "javascript" | "python" | "java"])
-            }}
-            className="bg-slate-800 text-white text-sm rounded px-2 py-1 border border-slate-700"
-          >
-            <option value="javascript">JavaScript</option>
-            <option value="python">Python</option>
-            <option value="java">Java</option>
-          </select>
-
-          <button className="text-slate-300 hover:text-white">
-            <Settings className="h-5 w-5" />
-          </button>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col md:flex-row">
@@ -165,59 +122,15 @@ export default function InterviewPage() {
               {/* Content */}
               <div className="flex-1 overflow-y-auto p-4">
                 {activeTab === "description" && (
-                  <div className="space-y-4">
-                    <div className="prose max-w-none">
-                      <p className="whitespace-pre-line">{problem.description}</p>
-                    </div>
-
-                    <div>
-                      <h3 className="font-bold text-lg mt-6 mb-2">Examples:</h3>
-                      {problem.testCases.map((example, index) => (
-                        <div key={index} className="mb-4 bg-slate-50 p-3 rounded-md">
-                          <div className="mb-1">
-                            <span className="font-medium">Input:</span> {example.input}
-                          </div>
-                          <div className="mb-1">
-                            <span className="font-medium">Output:</span> {example.expectedOutput}
-                          </div>
-                          {example.explanation && (
-                            <div>
-                              <span className="font-medium">Explanation:</span> {example.explanation}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-
-                    <div>
-                      <h3 className="font-bold text-lg mt-6 mb-2">Constraints:</h3>
-                      <ul className="list-disc pl-5 space-y-1">
-                        {problem.constraints.map((constraint, index) => (
-                          <li key={index}>{constraint}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+                  <Description id={id} />
                 )}
 
                 {activeTab === "submissions" && (
-                  <div className="text-center py-8">
-                    <MessageSquare className="h-12 w-12 mx-auto text-slate-300 mb-4" />
-                    <h3 className="text-lg font-medium text-slate-900 mb-2">Solution will be available</h3>
-                    <p className="text-slate-600">
-                      After you successfully submit your solution or when the interview is complete.
-                    </p>
-                  </div>
+                  <Submission />
                 )}
 
                 {activeTab === "discussion" && (
-                  <div className="text-center py-8">
-                    <MessageSquare className="h-12 w-12 mx-auto text-slate-300 mb-4" />
-                    <h3 className="text-lg font-medium text-slate-900 mb-2">Discussion will be available</h3>
-                    <p className="text-slate-600">
-                      After you complete the interview, you can discuss your approach with the AI interviewer.
-                    </p>
-                  </div>
+                  <Discussion />
                 )}
               </div>
             </>
@@ -234,7 +147,34 @@ export default function InterviewPage() {
         </div>
 
         {/* Code Editor Panel */}
-        <div className={`flex-1 flex flex-col ${isDescriptionExpanded ? "md:w-3/5" : "md:flex-1"}`}>
+        <div id="editor-panel" className={`flex-1 h- flex flex-col ${isDescriptionExpanded ? "md:w-3/5" : "md:flex-1"}`}>
+          
+          <div className="flex items-center justify-end border-b border-slate-200 space-x-5 px-3 py-2">
+            <div className="flex items-center text-slate-800">
+              <pre className="text-slate-800">Language: </pre>
+              <select
+                name="lang"
+                id="lang"
+                value={language}
+                onChange={(e) => {
+                  setLanguage(e.target.value as "javascript" | "python" | "java")
+                  // setCode(problem.starterCode[e.target.value as "javascript" | "python" | "java"])
+                }}
+                className="text-sm rounded px-2 py-1 border border-slate-700 "
+                >
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+              </select>
+            </div>
+            {/* <div className="flex items-center text-slate-800">
+              <Clock className="h-4 w-4 mr-1" />
+              <span className="text-sm">25:00</span>
+            </div>  */}
+            {/* <button className="text-slate-800">
+              <Settings className="h-5 w-5" />
+            </button> */}
+          </div>
           <MonacoEditor value={code} language={language} onChange={(value) => setCode(value || "")} />
 
           <div className="border-t border-slate-200">
@@ -245,9 +185,10 @@ export default function InterviewPage() {
                   className="ml-2 p-1 text-slate-500 hover:text-slate-700"
                   onClick={() => {
                     const testCasesElement = document.getElementById("test-cases-panel")
+                    // const editorElement = document.getElementById("editor-panel")
                     if (testCasesElement) {
                       testCasesElement.classList.toggle("h-64")
-                      testCasesElement.classList.toggle("h-12")
+                      testCasesElement.classList.toggle("h-5")
                     }
                   }}
                 >
@@ -275,7 +216,7 @@ export default function InterviewPage() {
             </div>
 
             <div id="test-cases-panel" className="h-64 overflow-y-auto transition-all duration-300">
-              <TestCases testCases={problem.testCases} results={testResults} />
+              <TestCases testCases={problem.testCases} results={testResults} loading={loading} />
             </div>
           </div>
         </div>
