@@ -8,6 +8,7 @@ import PublicLayout from './layout/PublicLayout.tsx'
 import { HomePage, DashboardPage, SignInPage, SignUpPage, JobDetailPage, InterviewPage, MyJobsPage } from './pages/index.ts'
 import PrivateLayout from './layout/PrivateLayout.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
+import { JobProvider } from './context/JobContext.tsx'
 
 const router = createBrowserRouter([
   {
@@ -40,7 +41,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <JobProvider>
+        <RouterProvider router={router} />
+      </JobProvider>
     </AuthProvider>
   </StrictMode>,
 )

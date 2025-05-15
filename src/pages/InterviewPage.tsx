@@ -1,8 +1,6 @@
-import { fetchJobById } from "@/api/AxiosInstance";
 import MonacoEditor from "@/components/interview/CodeEditor";
 // import CodeEditor from "@/components/interview/CodeEditor";
 import TestCases from "@/components/interview/TestCase";
-import { ProblemType } from "@/types";
 import { ChevronUp, Play } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -11,6 +9,7 @@ import Header from "@/components/interview/Header";
 import Description from "@/components/interview/Description";
 import Submission from "@/components/interview/Submission";
 import Discussion from "@/components/interview/Discussion";
+import { useJob } from "@/context/JobContext";
 
 
 export default function InterviewPage() {
@@ -19,9 +18,10 @@ export default function InterviewPage() {
   if(!id) {
     return;
   }
+  const { fetchJobById, jobLoading, problem } = useJob()
   
-  const [problem, setProblem] = useState<ProblemType | null>(null)
-  const [loading, setLoading] = useState(true)
+  // const [problem, setProblem] = useState<ProblemType | null>(null)
+  // const [loading, setLoading] = useState(true)
   const [language, setLanguage] = useState<"javascript" | "python" | "java">("python")
   const [code, setCode] = useState("")
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true)
@@ -30,19 +30,7 @@ export default function InterviewPage() {
   const [testResults, setTestResults] = useState<Array<{ passed: boolean, actualOutput: string, error: string }>>([])
 
   useEffect(() => {
-    const loadProblem = async () => {
-      try {
-        const response = await fetchJobById(id)
-        // console.log("Response problem :", response.data.question)
-        setProblem(response.data.question)
-      } catch (error) {
-        console.error("failed fetching problem : ", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadProblem()
+    if(id) fetchJobById(id)
   }, [id])
 
   const handleRunCode = () => {
@@ -216,7 +204,7 @@ export default function InterviewPage() {
             </div>
 
             <div id="test-cases-panel" className="h-64 overflow-y-auto transition-all duration-300">
-              <TestCases testCases={problem.testCases} results={testResults} loading={loading} />
+              <TestCases testCases={problem.testCases} results={testResults} loading={jobLoading} />
             </div>
           </div>
         </div>

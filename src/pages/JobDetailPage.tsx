@@ -1,9 +1,6 @@
-import { fetchJobById } from "@/api/AxiosInstance"
-import { useAuth } from "@/context/AuthContext"
-// import DashboardHeader from "@/components/dashboard/DashboardHeader"
-import { JobType } from "@/types"
+import { useJob } from "@/context/JobContext"
 import { ArrowLeft, Building, Clock, MapPin } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 
@@ -11,44 +8,41 @@ export default function JobDetailPage() {
 
     const { id } = useParams()
     const navigate = useNavigate()
-    const { saveJob, user } = useAuth()
+    const { fetchJobById, jobLoading, job } = useJob()
 
-    let payload = { userId: "", jobId: "" }
-    if(user) {
-      payload.userId = user._id
-    }
-    if(id) {
-      payload.jobId = id
-    }
-    const handleSaveJob = async () => {
-      try {
-        console.log("save job called")
-        await saveJob(payload.userId, payload.jobId)
-      } catch (error) {
-        console.error("Error while saving job: ", error)
-      }
-    }
+    const handleSaveJob = () => {
+      const existingData = localStorage.getItem("jobs")
 
-    // console.log(id)
-    const [job, setJob] = useState<JobType | null>(null)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-      const loadJob = async () => {
+      let jobsArray = []
+      if(existingData) {
         try {
-          const response = await fetchJobById(id as string)
-          setJob(response.data)
+          const parsed = JSON.parse(existingData);
+          if(Array.isArray(parsed)) {
+            jobsArray = parsed;
+          }
         } catch (error) {
-          console.error("FAiled to fetch Job: ", error)
-        } finally {
-          setLoading(false)
+          console.error("failed to parse existing jobs from localstorage: ", error)
         }
       }
+      const payload = { _id: "", title: "", company: "", savedAt: "" }
+      if(job) { 
+        payload._id = job._id
+        payload.title = job.title
+        payload.company = job.company
+        payload.savedAt = new Date().toLocaleDateString()
+      }
+      jobsArray.push(payload)
 
-      loadJob()
+      localStorage.setItem("jobs", JSON.stringify(jobsArray))
+    }
+
+    useEffect(() => {
+      if(id) {
+        fetchJobById(id)
+      }
     }, [id])
 
-    if(loading) return <div>Loading....</div>
+    if(jobLoading) return <div>Loading....</div>
     if(!job) return <div>Job not found</div>
     
     return (

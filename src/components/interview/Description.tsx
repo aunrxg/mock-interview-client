@@ -1,32 +1,19 @@
-import { fetchJobById } from "@/api/AxiosInstance"
-import { ProblemType } from "@/types"
-import { useEffect, useState } from "react"
+import { useJob } from "@/context/JobContext";
+import { useEffect } from "react"
 type DescriptionProp = {
   id: string;
 }
 
 export default function Description({ id }: DescriptionProp) {
 
-  const [problem, setProblem] = useState<ProblemType | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { fetchJobById, problem, jobLoading } = useJob()
 
 
   useEffect(() => {
-    const loadProblem = async () => {
-      try {
-        const response = await fetchJobById(id)
-        setProblem(response.data.question)
-      } catch (error) {
-        console.error("Failed to fetch Problem: ", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadProblem()
+    if(id) fetchJobById(id)
   }, [id])
 
-  if(loading) return <div>Loading...</div>
+  if(jobLoading) return <div>Loading...</div>
   if(!problem) return <div>No Problem found...</div>
   return (
     <div className="space-y-4">

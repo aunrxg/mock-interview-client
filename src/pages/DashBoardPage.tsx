@@ -1,39 +1,20 @@
-// import DashboardHeader from "@/components/dashboard/DashboardHeader"
-import { fetchJobs } from "@/api/AxiosInstance"
 import JobListings from "@/components/dashboard/JobListing"
 import OnboardingPrompt from "@/components/dashboard/OnBoardPrompt"
-import { JobType } from "@/types"
+import { useJob } from "@/context/JobContext"
 import { Search } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export default function DashboardPage() {
 
-  const [jobs,setJobs] = useState<JobType[]>([])
-  const[loading, setLoading] = useState(true)
+  const { fetchAllJobs, allJobs, allJobsLoading } = useJob()
   const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
-      const loadJobs = async () => {
-        try {
-          const data = await fetchJobs();
-          // console.log("Fetched jobs data:", data.data);
-          if (!Array.isArray(data.data)) {
-            console.error("Expected an array from fetchJobs but got:", data.data);
-          } else {
-            setJobs(data.data);
-          }
-          
-        } catch (error) {
-          console.error("Failed to fetch jobs: ", error)
-        } finally {
-          setLoading(false);
-        }
-      }
-  
-      loadJobs()
-    }, [])
+    fetchAllJobs()
+  }, [])
 
-  const filterJobs = jobs.filter((job) => {
+  if(!allJobs) return <div>Jobs couldn't load </div>
+  const filterJobs = allJobs.filter((job) => {
     const matchesSearch = 
       job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -72,7 +53,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <JobListings loading={loading} filteredJobs={filterJobs} />
+          <JobListings loading={allJobsLoading} filteredJobs={filterJobs} />
         </div>
       </main>
     </div>
