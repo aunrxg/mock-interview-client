@@ -10,10 +10,10 @@ export default function DashboardHeader() {
 
 
   useEffect(() => {
-    if(user) {
+    if(user?.fullName) {
       setName(user.fullName.trim().split(" ")[0])
     }
-  }, [])
+  }, [user])
   // let fullName = ""
   // if(user?.fullName) {
   //   fullName = user.fullName.trim().split(" ")[0]
@@ -59,11 +59,19 @@ export default function DashboardHeader() {
               <MessageSquare className="h-5 w-5 text-slate-600" />
             </button> */}
             <div className="h-8 w-px bg-slate-200"></div>
+            {/* { name && 
+              <div className="flex items-center space-x-2">
+                <Link to='/app/profile' className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center cursor-pointer">
+                  <User className="h-5 w-5 text-slate-600" />
+                </Link>
+                <span className="font-medium">{ name }</span>
+              </div>
+            } */}
             <div className="flex items-center space-x-2">
               <Link to='/app/profile' className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center cursor-pointer">
                 <User className="h-5 w-5 text-slate-600" />
               </Link>
-              <span className="font-medium">{ name }</span>
+              <span className="font-medium">{ name || "..." }</span>
             </div>
           </div>
 
@@ -113,14 +121,16 @@ export default function DashboardHeader() {
                   <MessageSquare className="h-5 w-5 text-slate-600" />
                 </button> */}
               </div>
-              <div className="flex items-center space-x-2 pt-2">
-                <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
-                  <User className="h-5 w-5 text-slate-600" />
+              { name && 
+                <div className="flex items-center space-x-2 pt-2">
+                  <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
+                    <User className="h-5 w-5 text-slate-600" />
+                  </div>
+                  <span className="font-medium">
+                    { name }
+                  </span>
                 </div>
-                <span className="font-medium">
-                  { name }
-                </span>
-              </div>
+              }
             </nav>
           </div>
         )}

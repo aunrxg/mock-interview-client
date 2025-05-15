@@ -1,10 +1,11 @@
+import { TestCasesType } from "@/types"
 import { CheckCircle, XCircle } from "lucide-react"
 
-interface TestCases {
-  input: string
-  expectedOutput: string
-  explanation: string
-}
+// interface TestCases {
+//   input: string
+//   expectedOutput: string
+//   explanation: string
+// }
 
 interface TestResult {
   passed: boolean
@@ -13,11 +14,14 @@ interface TestResult {
 }
 
 interface TestCasesProps {
-  testCases: TestCases[]
+  testCases: TestCasesType[]
   results: TestResult[]
+  loading: boolean
 }
 
-export default function TestCases({ testCases, results }: TestCasesProps) {
+export default function TestCases({ testCases, results, loading }: TestCasesProps) {
+
+  if(loading) return <div>Loading...</div>
   return (
     <div className="divide-y divide-slate-200">
       {testCases.map((testCase, index) => {

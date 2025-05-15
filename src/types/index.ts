@@ -31,7 +31,7 @@ export type JobType = {
   savedAt: Date
 }
 
-type TestCases = {
+export type TestCasesType = {
   input: string;
   expectedOutput: string;
   explanation: string;
@@ -39,9 +39,9 @@ type TestCases = {
 
 export type ProblemType = {
   difficulty: string;
-  examples: [TestCases];
+  examples: [TestCasesType];
   constraints: [string];
   title: string;
   description: string;
-  testCases: [TestCases];
+  testCases: [TestCasesType];
 }

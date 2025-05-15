@@ -8,10 +8,10 @@ export default function OnboardingPrompt() {
   const { user } = useAuth()
 
   useEffect(() => {
-    if(user) {
+    if(user?.fullName) {
       setName(user.fullName.trim().split(" ")[0])
     }
-  }, [])
+  }, [user])
 
   if (!isVisible) return null
 
@@ -30,7 +30,10 @@ export default function OnboardingPrompt() {
         </div>
 
         <div className="flex-1">
-          <h2 className="text-xl font-bold text-slate-900 mb-2">Welcome to GeekCodesAI, { name }</h2>
+          {/* { name && 
+            <h2 className="text-xl font-bold text-slate-900 mb-2">Welcome to GeekCodesAI, { name }</h2>
+          } */}
+          <h2 className="text-xl font-bold text-slate-900 mb-2">Welcome to GeekCodesAI, { name || "..." }</h2>
           <p className="text-slate-600 mb-4">
             Ready to ace your next technical interview? Start by selecting a job role below that matches your career
             goals, and begin practicing with our AI interviewer.
