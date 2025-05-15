@@ -1,78 +1,30 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { ArrowRight, BookmarkX, Calendar, Search } from "lucide-react"
-import { useAuth } from "@/context/AuthContext"
 import { JobType } from "@/types"
-import { fetchJobById } from "@/api/AxiosInstance"
-// import DashboardHeader from "@/components/dashboard/DashboardHeader"
-
-// interface savedJobType {
-//   job: string;
-//   savedAt: Date;
-// }
-
-// Sample saved interviews data
-// const savedInterviewsData = [
-//   {
-//     id: 1,
-//     jobTitle: "Frontend Developer",
-//     company: "TechCorp",
-//     savedDate: "2023-05-15",
-//     status: "Saved",
-//     nextInterview: null,
-//   },
-//   {
-//     id: 2,
-//     jobTitle: "Backend Engineer",
-//     company: "DataSystems",
-//     savedDate: "2023-05-10",
-//     status: "In Progress",
-//     nextInterview: "2023-05-20",
-//   },
-//   {
-//     id: 3,
-//     jobTitle: "Full Stack Developer",
-//     company: "WebSolutions",
-//     savedDate: "2023-05-05",
-//     status: "Completed",
-//     nextInterview: null,
-//     score: 85,
-//   },
-// ]
 
 export default function MyJobsPage() {
 
-  const { user } = useAuth()
-
-  const [jobs, setJobs] = useState<JobType[]>([])
-  const [savedJobIds, setSavedJobIds] = useState<string[]>([])
+  
+  const [savedJobs, setSavedJobs] = useState<JobType[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   // const [statusFilter, setStatusFilter] = useState<string | null>(null)
-  useEffect(() => {
-    if(user?.jobs) {
-      setSavedJobIds(user.jobs.map(job => job.job))
-    }
-
-  }, [user])
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const jobPromise = savedJobIds.map((jobId) => fetchJobById(jobId))
-        const jobResults = await Promise.all(jobPromise)
-        const jobDataArray = jobResults.map(res => res.data)
-        setJobs(jobDataArray)
-      } catch (error) {
-        console.error("Error while fetching jobs: ", error)
+    const rawData = localStorage.getItem('jobs')
+    try {
+      const parsed = rawData ? JSON.parse(rawData) : [];
+      if(Array.isArray(parsed)) {
+        setSavedJobs(parsed)
       }
+    } catch (error) {
+      console.error("Failed to parse savedJObs from localstorage", error)
     }
-    if(savedJobIds.length > 0) {
-      fetchJobs()
-    }
-  }, [savedJobIds])
+  }, [])
+
 
   // Filter interviews based on search query and status filter
-  const filteredJobs = jobs.filter((job) => {
+  const filteredJobs = savedJobs.filter((job) => {
     const matchesSearch =
       job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       job.company.toLowerCase().includes(searchQuery.toLowerCase())
@@ -85,7 +37,19 @@ export default function MyJobsPage() {
 
   // Function to remove an interview
   const removeInterview = (id: string) => {
-    setJobs(jobs.filter((job) => job._id !== id))
+    setSavedJobs(savedJobs.filter((job) => job._id !== id))
+    const existingData = localStorage.getItem('jobs')
+    if(!existingData) return;
+    try {
+      const parsed = JSON.parse(existingData)
+      if(Array.isArray(parsed)) {
+        const updatedJobs = parsed.filter(job => job._id !== id )
+        localStorage.setItem('jobs', JSON.stringify(updatedJobs))
+        setSavedJobs(updatedJobs)
+      }
+    } catch (error) {
+      console.log("Failed to remove job from localstorage: ", error)
+    }
   }
 
   return (
