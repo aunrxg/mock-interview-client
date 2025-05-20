@@ -9,6 +9,7 @@ import { HomePage, DashboardPage, SignInPage, SignUpPage, JobDetailPage, Intervi
 import PrivateLayout from './layout/PrivateLayout.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import { JobProvider } from './context/JobContext.tsx'
+import { SubProvider } from './context/SubmissionContext.tsx'
 
 const router = createBrowserRouter([
   {
@@ -42,7 +43,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
       <JobProvider>
-        <RouterProvider router={router} />
+        <SubProvider>
+          <RouterProvider router={router} />
+        </SubProvider>
       </JobProvider>
     </AuthProvider>
   </StrictMode>,
