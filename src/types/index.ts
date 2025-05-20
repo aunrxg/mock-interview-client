@@ -6,6 +6,7 @@ export type User = {
   jobs: [{ job: string, savedAt: Date }];
 }
 
+
 export type AuthContextType = {
   user: User | null;
   login: (emailOrUsername: string, password: string) => Promise<void>;
@@ -26,6 +27,33 @@ export type JobContextType = {
   fetchJobById: (id: string) => Promise<void>;
 }
 
+
+export type SubContextType = {
+  submissions: SubmissionsType[] | null;
+  // testCaseResult: TestCaseResultType[] | null;
+  subLoading: boolean;
+  fetchSubs: (jobId: string) => Promise<void>;
+}
+export type SubmissionsType = {
+  _id: string;
+  judgeResult: JudgeResultType
+}
+export type JudgeResultType = {
+  allPassed: boolean;
+  totalTime: string;
+  maxMemory: string;
+  results: TestResultType[];
+}
+export type TestResultType = {
+  input: string;
+  actualOutput: string;
+  expectedOutput: string;
+  passed: boolean;
+  status: string;
+  time: string;
+  space: string;
+  error: string | null;
+}
 export type JobType = {
   _id: string;
   title: string;
