@@ -10,6 +10,7 @@ import PrivateLayout from './layout/PrivateLayout.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import { JobProvider } from './context/JobContext.tsx'
 import { SubProvider } from './context/SubmissionContext.tsx'
+import { EditorProvider } from './context/EditorContext.tsx'
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,9 @@ createRoot(document.getElementById('root')!).render(
     <AuthProvider>
       <JobProvider>
         <SubProvider>
-          <RouterProvider router={router} />
+          <EditorProvider>
+            <RouterProvider router={router} />
+          </EditorProvider>
         </SubProvider>
       </JobProvider>
     </AuthProvider>
