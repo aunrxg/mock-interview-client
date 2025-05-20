@@ -30,13 +30,16 @@ export type JobContextType = {
 
 export type SubContextType = {
   submissions: SubmissionsType[] | null;
-  // testCaseResult: TestCaseResultType[] | null;
+  sub: SubmissionsType | null;
+  loading: boolean;
   subLoading: boolean;
-  fetchSubs: (jobId: string) => Promise<void>;
+  fetchAllSubs: (jobId: string) => Promise<void>;
+  fetchSub: (id: string) => Promise<void>;
 }
 export type SubmissionsType = {
   _id: string;
-  judgeResult: JudgeResultType
+  judgeResult: JudgeResultType;
+  code: string;
 }
 export type JudgeResultType = {
   allPassed: boolean;
@@ -84,3 +87,12 @@ export type ProblemType = {
   description: string;
   testCases: [TestCasesType];
 }
+
+export type EditorContextType = {
+  code: string;
+  language: Language;
+  setCode: (code: string) => void;
+  setLanguage: (lang: Language) => void;
+}
+
+export type Language = "python" | "java" | "javascript"

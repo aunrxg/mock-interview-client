@@ -57,27 +57,29 @@ const MonacoEditor = ({ language, value, onChange }: MonacoEditorProps) => {
   // const editorRef = useRef<Monaco (null)
 
   return (
-    <div className="w-full h-[65%]">
-      <Editor
-        height="100%"
-        defaultLanguage={language}
-        value={value}
-        onChange={onChange}
-        theme="vs-light"
-        options={{
-          fontSize: 14,
-          minimap: { enabled: false },
-          scrollBeyondLastLine: false,
-          wordWrap: "on",
-          lineNumbers: "on",
-          tabSize: 2,
-          automaticLayout: true,
-          suggestOnTriggerCharacters: false,
-          quickSuggestions: false,
-          parameterHints: { enabled: false },
-          wordBasedSuggestions: "off",
-        }}
-      />
+    <div className="w-full h-full flex-1 relative font-mono">
+      <div className="absolute inset-0">
+        <Editor
+          height="100%"
+          defaultLanguage={language}
+          value={value}
+          onChange={onChange}
+          theme="vs-light"
+          options={{
+            fontSize: 14,
+            minimap: { enabled: false },
+            scrollBeyondLastLine: false,
+            wordWrap: "on",
+            lineNumbers: "on",
+            tabSize: 2,
+            automaticLayout: true,
+            suggestOnTriggerCharacters: false,
+            quickSuggestions: false,
+            parameterHints: { enabled: false },
+            wordBasedSuggestions: "off",
+          }}
+        />
+      </div>
     </div>
   )
 } 

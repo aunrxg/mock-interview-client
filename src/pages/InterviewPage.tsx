@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { ChevronUp, Play } from "lucide-react";
+import { ChevronDown, ChevronUp, Play } from "lucide-react";
 
 import api from "@/api/AxiosInstance";
 import MonacoEditor from "@/components/interview/CodeEditor";
-import { Description, Discussion, Header, Submission, TestCases } from "@/components/interview";
+import { AiReview, Description, Discussion, Header, Submission, TestCases } from "@/components/interview";
 
 import { useParams } from "react-router-dom";
 import { useJob } from "@/context/JobContext";
@@ -20,7 +20,8 @@ export default function InterviewPage() {
   const { code, setCode, language, setLanguage } = useEditor()
   
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true)
-  const [activeTab, setActiveTab] = useState<"description" | "submissions" | "discussion">("description")
+  const [isTestCasesExpanded, setIsTestCasesExpanded] = useState(true)
+  const [activeTab, setActiveTab] = useState<"description" | "submissions" | "discussion" | "aiReview">("description")
   const [isRunning, setIsRunning] = useState(false)
   const [testResults, setTestResults] = useState<Array<{ passed: boolean, actualOutput: string, error: string }>>([])
 
@@ -57,6 +58,10 @@ export default function InterviewPage() {
       }
     }, 1500);
   }
+
+  const toggleTestCasesPanel = () => {
+    setIsTestCasesExpanded(!isTestCasesExpanded)
+  }
   // if(!problem) return <div>No problem found. (interview page)</div>
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -91,6 +96,12 @@ export default function InterviewPage() {
                 >
                   Discussion
                 </button>
+                <button
+                  className={`px-4 py-3 text-sm font-medium whitespace-nowrap ${activeTab === "aiReview" ? "text-slate-900 border-b-2 border-slate-900" : "text-slate-600 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("aiReview")}
+                >
+                  AI Review
+                </button>
 
                 <div className="ml-auto pr-2 flex items-center">
                   <button
@@ -114,6 +125,10 @@ export default function InterviewPage() {
 
                 {activeTab === "discussion" && (
                   <Discussion />
+                )}
+
+                {activeTab === 'aiReview' && (
+                  <AiReview id={id} />
                 )}
               </div>
             </>
@@ -158,24 +173,16 @@ export default function InterviewPage() {
               <Settings className="h-5 w-5" />
             </button> */}
           </div>
-          <MonacoEditor value={code} language={language} onChange={(value) => setCode(value || "")} />
+          <div className="flex-1 overflow-hidden">
+            <MonacoEditor value={code} language={language} onChange={(value) => setCode(value || "")} />
+          </div>
 
           <div className="border-t border-slate-200">
             <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
               <div className="flex items-center">
                 <h3 className="font-medium">Test Cases</h3>
-                <button
-                  className="ml-2 p-1 text-slate-500 hover:text-slate-700"
-                  onClick={() => {
-                    const testCasesElement = document.getElementById("test-cases-panel")
-                    // const editorElement = document.getElementById("editor-panel")
-                    if (testCasesElement) {
-                      testCasesElement.classList.toggle("h-64")
-                      testCasesElement.classList.toggle("h-5")
-                    }
-                  }}
-                >
-                  <ChevronUp className="h-4 w-4" />
+                <button className="ml-2 p-1 text-slate-500 hover:text-slate-700" onClick={toggleTestCasesPanel}>
+                  {isTestCasesExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                 </button>
               </div>
 
@@ -198,9 +205,13 @@ export default function InterviewPage() {
               </div>
             </div>
 
-            <div id="test-cases-panel" className="h-64 overflow-y-auto transition-all duration-300">
+            {/* <div className={`overflow-y-auto transition-all duration-300 ${isTestCasesExpanded ? "h-64" : "h-0"}`}>
+              {isTestCasesExpanded && <TestCases testCases={problem.testCases} results={testResults} />}
+            </div> */}
+            <div id="test-cases-panel" className={`overflow-y-auto transition-all duration-300 ${isTestCasesExpanded ? "h-64" : "h-0"}`}>
               { problem && 
-                <TestCases testCases={problem?.testCases} results={testResults} loading={jobLoading} />
+                (isTestCasesExpanded && 
+                  <TestCases testCases={problem?.testCases} results={testResults} loading={jobLoading} />)
               }
             </div>
           </div>
