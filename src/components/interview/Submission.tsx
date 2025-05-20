@@ -1,3 +1,4 @@
+import { useEditor } from "@/context/EditorContext";
 import { useSub } from "@/context/SubmissionContext";
 import { AlertCircle, Bot, CheckCircle, Clock, MessageSquare, XCircle } from "lucide-react";
 import { useEffect } from "react";
@@ -10,14 +11,15 @@ type SubmissionProp = {
 
 export default function Submission({ id }: SubmissionProp) {
 
-  const { fetchSubs, subLoading, submissions } = useSub()
+  const { fetchAllSubs, subLoading, submissions, fetchSub, sub } = useSub()
+  const { setCode } = useEditor()
   // const { id } = useParams
   // console.log(id)
 
   useEffect(() => {
     if (id) {
       console.log("Calling fetchSubs with id:", id);
-      fetchSubs(id);
+      fetchAllSubs(id);
     }
   }, [id]);
 
@@ -26,6 +28,19 @@ export default function Submission({ id }: SubmissionProp) {
       <div>Loading...</div>
     ) 
   } 
+
+  const handleViewSubmission = (id: string) => {
+    fetchSub(id)
+    if(sub) {
+      setCode(sub.code)
+    }
+  }
+
+  const handleRequestAiReview = (id: string) => {
+    if(id) {
+      alert('Buidling soon')
+    }
+  }
 
   if(!submissions) {
     return (
@@ -90,7 +105,7 @@ export default function Submission({ id }: SubmissionProp) {
               {submissions.map((submission) => (
                 <tr key={submission._id} className="hover:bg-slate-50">
                   <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-slate-900">
-                    {submission._id}
+                    {submission._id.slice(16)}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm">
                     {submission.judgeResult.results.filter(item => item.passed).length === submission.judgeResult.results.length ? (

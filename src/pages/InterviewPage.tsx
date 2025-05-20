@@ -7,6 +7,7 @@ import { Description, Discussion, Header, Submission, TestCases } from "@/compon
 
 import { useParams } from "react-router-dom";
 import { useJob } from "@/context/JobContext";
+import { useEditor } from "@/context/EditorContext";
 
 
 export default function InterviewPage() {
@@ -16,11 +17,8 @@ export default function InterviewPage() {
     return;
   }
   const { fetchJobById, jobLoading, problem } = useJob()
+  const { code, setCode, language, setLanguage } = useEditor()
   
-  // const [problem, setProblem] = useState<ProblemType | null>(null)
-  // const [loading, setLoading] = useState(true)
-  const [language, setLanguage] = useState<"javascript" | "python" | "java">("python")
-  const [code, setCode] = useState("")
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true)
   const [activeTab, setActiveTab] = useState<"description" | "submissions" | "discussion">("description")
   const [isRunning, setIsRunning] = useState(false)

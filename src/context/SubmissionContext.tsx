@@ -5,25 +5,25 @@ import { createContext, ReactNode, useContext, useMemo, useState, } from "react"
 
 const SubContext = createContext<SubContextType>({
   submissions: null,
-  // testCaseResult: null,
+  sub: null,
   subLoading: true,
-  fetchSubs: async () => {},
+  loading: true,
+  fetchAllSubs: async () => {},
+  fetchSub: async () => {},
 })
 
 export const SubProvider = ({ children }: { children: ReactNode }) => {
 
   const [submissions, setSubmissions] = useState<SubmissionsType[] | null>(null)
   const [subLoading, setSubLoading] = useState(true)
+  const [sub, setSub] = useState<SubmissionsType | null>(null)
+  const [loading, setLoading] = useState(true)
   // const [testCaseResult, setTestCaseResult] = useState<TestCaseResultType[] | null>(null)
   
-  const fetchSubs = async (jobId: string) => {
-    console.log('fetching submission for jobId: ', jobId)
-
+  const fetchAllSubs = async (jobId: string) => {
     try {
       setSubLoading(true)
-      const res = await api.get(`/submit/get/${jobId}`)
-      console.log('sub response: ', res.data.data)
-
+      const res = await api.get(`/submit/getAll/${jobId}`)
       setSubmissions(res.data.data.submissions)
     } catch (error) {
       console.error("failed to fetch submissions: ", error)
@@ -33,12 +33,26 @@ export const SubProvider = ({ children }: { children: ReactNode }) => {
     }
   } 
 
+  const fetchSub = async (id: string) => {
+    try {
+      const res = await api.get(`/submit/get/${id}`)
+      setSub(res.data.data.submission)
+    } catch (error) {
+      console.error("failed to fetch the submission", error)
+      setSub(null)
+    } finally{
+      setLoading(false)
+    }
+  } 
+
   const value = useMemo(() => ({
     submissions,
-    // testCaseResult,
+    sub,
     subLoading,
-    fetchSubs,
-  }), [submissions, subLoading])
+    loading,
+    fetchAllSubs,
+    fetchSub,
+  }), [submissions, subLoading, sub, loading])
 
   return (
     <SubContext.Provider value={value}>
