@@ -1,14 +1,11 @@
-import MonacoEditor from "@/components/interview/CodeEditor";
-// import CodeEditor from "@/components/interview/CodeEditor";
-import TestCases from "@/components/interview/TestCase";
-import { ChevronUp, Play } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { ChevronUp, Play } from "lucide-react";
+
 import api from "@/api/AxiosInstance";
-import Header from "@/components/interview/Header";
-import Description from "@/components/interview/Description";
-import Submission from "@/components/interview/Submission";
-import Discussion from "@/components/interview/Discussion";
+import MonacoEditor from "@/components/interview/CodeEditor";
+import { Description, Discussion, Header, Submission, TestCases } from "@/components/interview";
+
+import { useParams } from "react-router-dom";
 import { useJob } from "@/context/JobContext";
 
 
@@ -55,14 +52,14 @@ export default function InterviewPage() {
         // console.log(payload)
         const res = await api.post('/submit', payload)
         console.log("Response : ", res.data)
-        setTestResults(res.data.data.testResults)
+        setTestResults(res.data.data.testResult.results)
         setIsRunning(false)
       } catch (error) {
         console.error("failed to submit: ", error)
       }
     }, 1500);
   }
-  if(!problem) return <div>No problem found. (interview page)</div>
+  // if(!problem) return <div>No problem found. (interview page)</div>
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
@@ -114,7 +111,7 @@ export default function InterviewPage() {
                 )}
 
                 {activeTab === "submissions" && (
-                  <Submission />
+                  <Submission id={id} />
                 )}
 
                 {activeTab === "discussion" && (
@@ -204,7 +201,9 @@ export default function InterviewPage() {
             </div>
 
             <div id="test-cases-panel" className="h-64 overflow-y-auto transition-all duration-300">
-              <TestCases testCases={problem.testCases} results={testResults} loading={jobLoading} />
+              { problem && 
+                <TestCases testCases={problem?.testCases} results={testResults} loading={jobLoading} />
+              }
             </div>
           </div>
         </div>
