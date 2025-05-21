@@ -24,6 +24,7 @@ export default function InterviewPage() {
   const [activeTab, setActiveTab] = useState<"description" | "submissions" | "discussion" | "aiReview">("description")
   const [isRunning, setIsRunning] = useState(false)
   const [testResults, setTestResults] = useState<Array<{ passed: boolean, actualOutput: string, error: string }>>([])
+  const [subId, setSUbId] = useState<string | undefined>("")
 
   useEffect(() => {
     if(id) fetchJobById(id)
@@ -120,7 +121,7 @@ export default function InterviewPage() {
                 )}
 
                 {activeTab === "submissions" && (
-                  <Submission id={id} />
+                  <Submission id={id} updateTab={setActiveTab} setReviewId={setSUbId} />
                 )}
 
                 {activeTab === "discussion" && (
@@ -128,7 +129,7 @@ export default function InterviewPage() {
                 )}
 
                 {activeTab === 'aiReview' && (
-                  <AiReview id={id} />
+                  <AiReview id={subId} updateTab={setActiveTab} />
                 )}
               </div>
             </>

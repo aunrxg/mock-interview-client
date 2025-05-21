@@ -1,20 +1,19 @@
 import { useEditor } from "@/context/EditorContext";
 import { useSub } from "@/context/SubmissionContext";
 import { AlertCircle, Bot, CheckCircle, Clock, MessageSquare, XCircle } from "lucide-react";
-import { useEffect } from "react";
-// import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
 
 type SubmissionProp = {
-  id: string
+  id: string;
+  updateTab: React.Dispatch<React.SetStateAction<"description" | "submissions" | "discussion" | "aiReview">>;
+  setReviewId: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 
-export default function Submission({ id }: SubmissionProp) {
+export default function Submission({ id, updateTab, setReviewId }: SubmissionProp) {
 
   const { fetchAllSubs, subLoading, submissions, fetchSub, sub } = useSub()
   const { setCode } = useEditor()
-  // const { id } = useParams
-  // console.log(id)
 
   useEffect(() => {
     if (id) {
@@ -38,7 +37,8 @@ export default function Submission({ id }: SubmissionProp) {
 
   const handleRequestAiReview = (id: string) => {
     if(id) {
-      alert('Buidling soon')
+      setReviewId(id)
+      updateTab("aiReview")
     }
   }
 

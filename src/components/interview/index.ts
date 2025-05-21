@@ -3,6 +3,7 @@ import Discussion from "./Discussion";
 import Description from "./Description";
 import TestCases from "./TestCase";
 import Submission from "./Submission";
+import AiReview from "./AiReview";
 
 
 export {
@@ -11,4 +12,5 @@ export {
   Description,
   TestCases,
   Submission,
+  AiReview,
 }
