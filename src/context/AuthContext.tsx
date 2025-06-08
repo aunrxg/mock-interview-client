@@ -2,12 +2,16 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 import api from "../api/AxiosInstance"
 import { AuthContextType } from "@/types";
 
+const throwFn = () => {
+  throw new Error("AuthContext not initialized");
+};
+
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  login: async () => {},
-  logout: async () => {},
-  register: async () => {},
-  saveJob: async () => {},
+  login: throwFn,
+  logout: throwFn,
+  register: throwFn,
+  saveJob: throwFn,
   loading: true,
   isLoggedIn: false,
 })
@@ -18,39 +22,28 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      // console.log("[AuthContext] fetchUser running...");
-      // console.log("Current user:", user);
-  
-      if (user) {
-        setLoading(false);
-        // console.log("Skipping fetchUser because user already exists.");
-        return;
-      }
-  
       try {
         const res = await api.get("/users/me");
         setUser(res.data.data);
-        // console.log("/users/me success:", res.data);
       } catch (err) {
         console.error("/users/me error:", err);
         setUser(null);
       } finally {
         setLoading(false);
-        // console.log("loading set to false");
       }
     };
   
-    fetchUser();
-  }, [user])
+    if (!user) fetchUser();
+  }, [])
 
-  const login = async (emailOrUsername: string, password: string) => {
+  const login = async (emailOrUsername: string, password: string): Promise<void> => {
     try {
       const payload = emailOrUsername.includes('@')
         ? { email: emailOrUsername, password }
         : { username: emailOrUsername, password }
 
       const res = await api.post('/users/login', payload)
-      setUser(res.data) // only if successful
+      setUser(res.data.data) // only if successful
       setLoading(false)
     } catch (err) {
       console.error('Login error:', err)
@@ -63,12 +56,12 @@ export const AuthProvider = ({ children }: { children: ReactNode} ) => {
     setUser(null)
   }
 
-  const register = async (fullName: string, email: string, username: string, password: string) => {
+  const register = async (fullName: string, email: string, username: string, password: string): Promise<void> => {
     try {
       const payload = { fullName, email, username, password }
 
       const res = await api.post('/users/register', payload)
-      setUser(res.data)
+      setUser(res.data.data)
     } catch (error) {
       console.error('Register error: ', error)
       throw error;

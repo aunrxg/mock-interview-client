@@ -1,25 +1,11 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Bell, Menu, User, X } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 
 export default function DashboardHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [name, setName] = useState<string>("")
-  const { user } = useAuth()
-
-
-  useEffect(() => {
-    if(user?.fullName) {
-      setName(user.fullName.trim().split(" ")[0])
-    }
-  }, [user])
-  // let fullName = ""
-  // if(user?.fullName) {
-  //   fullName = user.fullName.trim().split(" ")[0]
-  //   // console.log(fullName)
-  // }
-  // console.log("user: ", user?.data.username)
+  const { user, loading } = useAuth()
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-10">
@@ -71,7 +57,9 @@ export default function DashboardHeader() {
               <Link to='/app/profile' className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center cursor-pointer">
                 <User className="h-5 w-5 text-slate-600" />
               </Link>
-              <span className="font-medium">{ name || "..." }</span>
+              <span className="font-medium">
+              { loading ? "..." : user?.fullName?.split(" ")[0] || "Guest" }
+              </span>
             </div>
           </div>
 
@@ -121,13 +109,13 @@ export default function DashboardHeader() {
                   <MessageSquare className="h-5 w-5 text-slate-600" />
                 </button> */}
               </div>
-              { name && 
+              {
                 <div className="flex items-center space-x-2 pt-2">
                   <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
                     <User className="h-5 w-5 text-slate-600" />
                   </div>
                   <span className="font-medium">
-                    { name }
+                  { loading ? "..." : user?.fullName?.split(" ")[0] || "Guest" }
                   </span>
                 </div>
               }
