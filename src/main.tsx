@@ -5,7 +5,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RootLayout from './layout/RootLayout.tsx'
 import PublicLayout from './layout/PublicLayout.tsx'
-import { HomePage, DashboardPage, SignInPage, SignUpPage, JobDetailPage, InterviewPage, MyJobsPage } from './pages/index.ts'
+import { HomePage, DashboardPage, SignInPage, SignUpPage, JobDetailPage, InterviewPage, MyJobsPage, NotFound } from './pages/index.ts'
 import PrivateLayout from './layout/PrivateLayout.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import { JobProvider } from './context/JobContext.tsx'
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
           { path: '/signup', element: <SignUpPage /> },
         ],
       },
+      {
+        path: '*',
+        element: <NotFound />
+      }
     ],
   },
   {
@@ -38,6 +42,10 @@ const router = createBrowserRouter([
       { path: 'interview/:id', element: <InterviewPage /> },
     ],
   },
+  {
+    path: '/app/*',
+    element: <NotFound />
+  }
 ])
 
 createRoot(document.getElementById('root')!).render(
