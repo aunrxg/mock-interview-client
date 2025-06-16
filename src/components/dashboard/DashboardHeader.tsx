@@ -4,10 +4,39 @@ import { Bell, ChevronDown, LogOut, Menu, User, X } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 
 export default function DashboardHeader() {
+
+  const sampleNotifications = [
+  {
+    id: 1,
+    title: "New feature available",
+    message: "Try our new AI code review feature for better feedback.",
+    time: "2 hours ago",
+    read: false,
+  },
+  {
+    id: 2,
+    title: "Interview scheduled",
+    message: "Your mock interview for Frontend Developer is scheduled for tomorrow at 10:00 AM.",
+    time: "1 day ago",
+    read: true,
+  },
+  {
+    id: 3,
+    title: "Practice reminder",
+    message: "You haven't practiced in 3 days. Keep up your coding streak!",
+    time: "3 days ago",
+    read: true,
+  },
+]
+
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileDropDownOpen, setIsProfileDropDownOpen] = useState(false)
+  const [isNotificationDropDownOpen, setIsNotificationDropDownOpen] = useState(false)
+  const [notifications, setNotifications] = useState(sampleNotifications)
 
   const profileDropDownRef = useRef<HTMLDivElement>(null)
+  const notificationDropDownRef = useRef<HTMLDivElement>(null)
 
   const { user, loading, logout } = useAuth()
 
@@ -17,6 +46,9 @@ export default function DashboardHeader() {
       if(profileDropDownRef.current && !profileDropDownRef.current.contains(event.target as Node)) {
         setIsProfileDropDownOpen(false)
       }
+      if(notificationDropDownRef.current && !notificationDropDownRef.current.contains(event.target as Node)) {
+        setIsNotificationDropDownOpen(false)
+      }
     }
 
     document.addEventListener("mousedown", handleClickOutside)
@@ -24,6 +56,21 @@ export default function DashboardHeader() {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
+
+  const markAsRead = (id: number) => {
+    setNotifications(
+      notifications.map((notification) => (notification.id === id ? { ...notification, read: true } : notification)),
+    )
+  }
+
+  const markAllAsRead = () => {
+    setNotifications(
+      notifications.map((notification) => ({ ...notification, read: true }))
+    )
+  }
+
+  const unreadCount = notifications.filter((notification) => !notification.read).length
+
 
   const handleLogout = async () => {
     try {
@@ -66,10 +113,68 @@ export default function DashboardHeader() {
             {/* <button className="p-2 rounded-full hover:bg-slate-100">
               <Search className="h-5 w-5 text-slate-600" />
             </button> */}
-            <button className="p-2 rounded-full hover:bg-slate-100 relative cursor-pointer">
-              <Bell className="h-5 w-5 text-slate-600" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
+            <div className="relative" ref={notificationDropDownRef}>
+              <button 
+                className="p-2 rounded-full hover:bg-slate-100 relative cursor-pointer"
+                onClick={() => {
+                  setIsNotificationDropDownOpen(!isNotificationDropDownOpen)
+                  setIsProfileDropDownOpen(false)
+                }}
+              >
+                <Bell className="h-5 w-5 text-slate-600" />
+                {unreadCount > 0 && <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>}
+              </button>
+
+              {isNotificationDropDownOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden z-20">
+                  <div className="p-3 border-b border-slate-200 flex justify-between items-center">
+                    <h3 className="font-medium">Notifications</h3>
+                    {unreadCount > 0 && (
+                      <button className="text-xs text-blue-600 hover:text-blue-800" onClick={() => markAllAsRead}>
+                        Mark all as read
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="max-h-80 overflow-y-auto">
+                    {notifications.length > 0 ? (
+                      <div>
+                        {notifications.map((notification) => (
+                          <div
+                            key={notification.id}
+                            className={`p-3 border-b border-slate-100 hover:bg-slate-50 ${!notification.read ? "bg-blue-50" : ""}`}
+                            onClick={() => markAsRead(notification.id)}
+                          >
+                            <div className="flex justify-between items-start">
+                              <h4 className="font-medium text-sm">{notification.title}</h4>
+                              <span className="text-xs text-slate-500">{notification.time}</span>
+                            </div>
+                            <p className="text-sm text-slate-600 mt-1">{notification.message}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="p-6 text-center">
+                        <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                          <Bell className="h-6 w-6 text-slate-400" />
+                        </div>
+                        <p className="text-slate-600">No new notifications</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-3 border-t border-slate-200 text-center">
+                    <Link
+                      to="/notifications"
+                      className="text-sm text-blue-600 hover:text-blue-800"
+                      onClick={() => setIsNotificationDropDownOpen(false)}
+                    >
+                      View all notifications
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
             {/* <button className="p-2 rounded-full hover:bg-slate-100">
               <MessageSquare className="h-5 w-5 text-slate-600" />
             </button> */}
@@ -87,6 +192,7 @@ export default function DashboardHeader() {
                 className="flex items-center space-x-2 hover:bg-slate-50 rounded-full p-1" 
                 onClick={() => {
                   setIsProfileDropDownOpen(!isProfileDropDownOpen)
+                  setIsNotificationDropDownOpen(false)
                 }}
                 >
                 <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center cursor-pointer">
