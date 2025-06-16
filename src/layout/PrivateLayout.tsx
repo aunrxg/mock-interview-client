@@ -4,7 +4,7 @@ import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import { Footer } from "@/components";
 
 export default function PrivateLayout () {
-  const { loading, isLoggedIn } = useAuth()
+  const { isLoggedIn } = useAuth()
   const location = useLocation()
 
   // console.log("🔐 PrivateLayout - loading:", loading, "| isLoggedIn:", isLoggedIn, "| user:", user);
@@ -13,7 +13,7 @@ export default function PrivateLayout () {
 
   const shouldHideLayout = hideLayoutFor.some((path) => location.pathname.startsWith(path))
 
-  if(loading) return <>Loading the private page...</>
+  // if(loading) return <>Loading the private page...</>
   if(!isLoggedIn) return <Navigate to="/login" replace />
 
   return (

@@ -6,6 +6,7 @@ import JobDetailPage from "./JobDetailPage";
 import InterviewPage from "./InterviewPage";
 import MyJobsPage from "./MyJobsPage";
 import NotFound from "./NotFoundPage";
+import ComingSoonPage from "./ComingSoonPage";
 
 export {
   HomePage,
@@ -16,4 +17,5 @@ export {
   InterviewPage,
   MyJobsPage,
   NotFound,
+  ComingSoonPage,
 }

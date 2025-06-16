@@ -3,9 +3,9 @@ import { Header, Footer } from "@/components";
 import { useAuth } from "@/context/AuthContext";
 
 export default function PublicLayout() {
-  const { loading, isLoggedIn } = useAuth()
+  const { isLoggedIn } = useAuth()
 
-  if(loading) return <div>Loading The public page...</div>
+  // if(loading) return <div>Loading The public page...</div>
 
   if(isLoggedIn) {
     return <Navigate to='/app/dashboard' replace />

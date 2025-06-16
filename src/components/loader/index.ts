@@ -1,12 +1,12 @@
 import DashboardSkeleton from "./DashboardSkeleton";
-import HomeSkeleton from "./HomeSkeleton";
+import LayoutSkeleton from "./HomeSkeleton";
 import InterviewSkeleton from "./InterviewSkeleton";
 import JobDetailSkeleton from "./JobDetailsSkeleton";
 import MyJobsSkeleton from "./MyJobsSkeleton";
 
 export {
   DashboardSkeleton,
-  HomeSkeleton,
+  LayoutSkeleton,
   InterviewSkeleton,
   JobDetailSkeleton,
   MyJobsSkeleton,

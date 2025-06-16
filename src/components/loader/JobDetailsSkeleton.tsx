@@ -1,10 +1,10 @@
-import DashboardHeader from "../dashboard/DashboardHeader";
+// import DashboardHeader from "../dashboard/DashboardHeader";
 
 
 export default function JobDetailSkeleton() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <DashboardHeader />
+      {/* <DashboardHeader /> */}
 
       <main className="container-custom py-8">
         {/* Back Button Skeleton */}

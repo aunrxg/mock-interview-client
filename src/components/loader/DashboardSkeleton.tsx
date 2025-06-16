@@ -1,10 +1,10 @@
-import DashboardHeader from "../dashboard/DashboardHeader";
+// import DashboardHeader from "../dashboard/DashboardHeader";
 
 
 export default function DashboardSkeleton() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <DashboardHeader />
+      {/* <DashboardHeader /> */}
 
       <main className="container-custom py-8">
         {/* Onboarding Prompt Skeleton */}
