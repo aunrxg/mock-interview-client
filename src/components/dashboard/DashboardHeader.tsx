@@ -1,11 +1,40 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import { Bell, Menu, User, X } from "lucide-react"
+import { Bell, ChevronDown, LogOut, Menu, User, X } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 
 export default function DashboardHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { user, loading } = useAuth()
+  const [isProfileDropDownOpen, setIsProfileDropDownOpen] = useState(false)
+
+  const profileDropDownRef = useRef<HTMLDivElement>(null)
+
+  const { user, loading, logout } = useAuth()
+
+  // close dropdowns when click outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if(profileDropDownRef.current && !profileDropDownRef.current.contains(event.target as Node)) {
+        setIsProfileDropDownOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      console.log("logging out...")
+      await logout()
+    } catch (error) {
+      console.error("Error while loggin out: ", error)
+    } finally {
+      console.log("Succefully loggedout")
+    }
+  }
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-10">
@@ -53,13 +82,92 @@ export default function DashboardHeader() {
                 <span className="font-medium">{ name }</span>
               </div>
             } */}
-            <div className="flex items-center space-x-2">
-              <Link to='/app/profile' className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center cursor-pointer">
-                <User className="h-5 w-5 text-slate-600" />
-              </Link>
-              <span className="font-medium">
-              { loading ? "..." : user?.fullName?.split(" ")[0] || "Guest" }
-              </span>
+            <div className="relative" ref={profileDropDownRef}>
+              <button 
+                className="flex items-center space-x-2 hover:bg-slate-50 rounded-full p-1" 
+                onClick={() => {
+                  setIsProfileDropDownOpen(!isProfileDropDownOpen)
+                }}
+                >
+                <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center cursor-pointer">
+                  <User className="h-5 w-5 text-slate-600" />
+                </div>
+                <span className="font-medium">
+                { loading ? "..." : user?.fullName?.split(" ")[0] || "Guest" }
+                </span>
+                <ChevronDown className="h-4 w-4 text-slate-500" />
+              </button>
+
+              {isProfileDropDownOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden z-20">
+                  <div className="p-4 border-b border-slate-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center">
+                        <User className="h-6 w-6 text-slate-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium">{ loading ? "..." : user?.fullName?.split(" ")[0] || "Guest" }</h3>
+                        <p className="text-sm text-slate-500">@{ loading ? "..." : user?.username?.split(" ")[0] || "@guest" }</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-600 mt-2">{ loading ? "..." : user?.email?.split(" ")[0] || "guest@example.com" }</p>
+                  </div>
+                  <div className="py-1">
+                    <Link
+                      to="/app/profile"
+                      className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                      onClick={() => setIsProfileDropDownOpen(false)}
+                    >
+                      <User className="h-4 w-4 mr-3 text-slate-500" />
+                      Your Profile
+                    </Link>
+                    {/* <Link
+                      to="/app/settings"
+                      className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                      onClick={() => setIsProfileDropDownOpen(false)}
+                    >
+                      <Settings className="h-4 w-4 mr-3 text-slate-500" />
+                      Settings
+                    </Link>
+                    <Link
+                      to="/app/change-password"
+                      className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                      onClick={() => setIsProfileDropDownOpen(false)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4 mr-3 text-slate-500"
+                      >
+                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                      Change Password
+                    </Link> */}
+                  </div>
+
+                  <div className="py-1 border-t border-slate-200">
+                    <button
+                      // to="/logout"
+                      className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-slate-100"
+                      onClick={() => {
+                        setIsProfileDropDownOpen(false)
+                        handleLogout()
+                      }}
+                    >
+                      <LogOut className="h-4 w-4 mr-3 text-red-500" />
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -109,8 +217,8 @@ export default function DashboardHeader() {
                   <MessageSquare className="h-5 w-5 text-slate-600" />
                 </button> */}
               </div>
-              {
-                <div className="flex items-center space-x-2 pt-2">
+              <div className="flex items-center justify-between pt-2">
+                <div className="flex items-center  space-x-2">
                   <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
                     <User className="h-5 w-5 text-slate-600" />
                   </div>
@@ -118,7 +226,15 @@ export default function DashboardHeader() {
                   { loading ? "..." : user?.fullName?.split(" ")[0] || "Guest" }
                   </span>
                 </div>
-              }
+                <button 
+                  className="text-red-600 hover:text-red-800 text-sm font-medium"
+                  onClick={() => {
+                    handleLogout()
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
             </nav>
           </div>
         )}
