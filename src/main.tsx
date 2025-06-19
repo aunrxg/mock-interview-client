@@ -31,12 +31,9 @@ const router = createBrowserRouter([
           { path: '/', element: <Suspense fallback={<LayoutSkeleton />}> <Home /> </Suspense> },
           { path: '/login', element: <SignInPage /> },
           { path: '/signup', element: <SignUpPage /> },
+          { path: '*', element: <NotFound /> },
         ],
       },
-      {
-        path: '*',
-        element: <NotFound />
-      }
     ],
   },
   {

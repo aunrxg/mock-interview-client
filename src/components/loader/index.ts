@@ -3,6 +3,8 @@ import LayoutSkeleton from "./HomeSkeleton";
 import InterviewSkeleton from "./InterviewSkeleton";
 import JobDetailSkeleton from "./JobDetailsSkeleton";
 import MyJobsSkeleton from "./MyJobsSkeleton";
+import SubmissionSkeleton from "./SubmissionSkeleton";
+import DiscussionSkeleton from "./DiscussionSkeleton";
 
 export {
   DashboardSkeleton,
@@ -10,4 +12,6 @@ export {
   InterviewSkeleton,
   JobDetailSkeleton,
   MyJobsSkeleton,
+  SubmissionSkeleton,
+  DiscussionSkeleton,
 }

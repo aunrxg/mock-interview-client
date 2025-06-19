@@ -2,6 +2,7 @@ import { useEditor } from "@/context/EditorContext";
 import { useSub } from "@/context/SubmissionContext";
 import { AlertCircle, Bot, CheckCircle, Clock, MessageSquare, XCircle } from "lucide-react";
 import React, { useEffect } from "react";
+import { SubmissionSkeleton } from "../loader";
 
 type SubmissionProp = {
   id: string;
@@ -24,7 +25,7 @@ export default function Submission({ id, updateTab, setReviewId }: SubmissionPro
 
   if(subLoading){
     return (
-      <div>Loading...</div>
+      <SubmissionSkeleton />
     ) 
   } 
 

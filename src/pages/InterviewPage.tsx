@@ -8,6 +8,7 @@ import { AiReview, Description, Discussion, Header, Submission, TestCases } from
 import { useParams } from "react-router-dom";
 import { useJob } from "@/context/JobContext";
 import { useEditor } from "@/context/EditorContext";
+import { InterviewSkeleton } from "@/components/loader";
 
 
 export default function InterviewPage() {
@@ -64,6 +65,7 @@ export default function InterviewPage() {
     setIsTestCasesExpanded(!isTestCasesExpanded)
   }
   // if(!problem) return <div>No problem found. (interview page)</div>
+  if(jobLoading) return <InterviewSkeleton />
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}

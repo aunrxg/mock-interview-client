@@ -1,3 +1,4 @@
+import { JobDetailSkeleton } from "@/components/loader"
 import { useJob } from "@/context/JobContext"
 import { ArrowLeft, Building, Clock, MapPin } from "lucide-react"
 import { useEffect } from "react"
@@ -42,7 +43,7 @@ export default function JobDetailPage() {
       }
     }, [id])
 
-    if(jobLoading) return <div>Loading....</div>
+    if(jobLoading) return <JobDetailSkeleton />
     if(!job) return <div>Job not found</div>
     
     return (
