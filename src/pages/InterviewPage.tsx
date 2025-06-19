@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { useJob } from "@/context/JobContext";
 import { useEditor } from "@/context/EditorContext";
 import { InterviewSkeleton } from "@/components/loader";
+import { TestCasesType, TestResultType } from "@/types";
 
 
 export default function InterviewPage() {
@@ -24,42 +25,49 @@ export default function InterviewPage() {
   const [isTestCasesExpanded, setIsTestCasesExpanded] = useState(true)
   const [activeTab, setActiveTab] = useState<"description" | "submissions" | "discussion" | "aiReview">("description")
   const [isRunning, setIsRunning] = useState(false)
-  const [testResults, setTestResults] = useState<Array<{ passed: boolean, actualOutput: string, error: string }>>([])
+  const [testResults, setTestResults] = useState<TestResultType[]>([])
   const [subId, setSUbId] = useState<string | undefined>("")
 
   useEffect(() => {
     if(id) fetchJobById(id)
   }, [id])
 
-  const handleRunCode = () => {
+  const handleRunCode = async (testCases: [TestCasesType]): Promise<void> => {
     setIsRunning(true)
 
-    setTimeout(() => {
-      console.log("Code Run Success")
+    // await new Promise(resolve => setTimeout(resolve, 1500))
 
-      setTestResults([])
+    try {
+      console.log("Code Run Success")
+      const payload = { code, language, testCases }
+      const res = await api.post("/submit/run", payload)
+      console.log("run respo: ", res.data)
+      setTestResults(res.data.data.testResult.results)
+    } catch (error) {
+      console.error("failed to run code ", error)
+    } finally {
       setIsRunning(false)
-    }, 1500)
+    }
   }
   
-  const handleSubmit = () => {
-    setIsRunning(true)
+  const handleSubmit = async (): Promise<void> => {
+  setIsRunning(true)
 
-    setTimeout(async () => {
-      console.log("sumission success here")
-      // console.log("Code : ", code)
-      try {
-        const payload = { jobId: id, code, language }
-        // console.log(payload)
-        const res = await api.post('/submit', payload)
-        console.log("Response : ", res.data)
-        setTestResults(res.data.data.testResult.results)
-        setIsRunning(false)
-      } catch (error) {
-        console.error("failed to submit: ", error)
-      }
-    }, 1500);
+  // Optional delay
+  await new Promise(resolve => setTimeout(resolve, 1500))
+
+  try {
+    console.log("submission success here")
+    const payload = { jobId: id, code, language }
+    const res = await api.post('/submit', payload)
+    console.log("Response : ", res.data)
+    setTestResults(res.data.data.testResult.results)
+  } catch (error) {
+    console.error("failed to submit: ", error)
+  } finally {
+    setIsRunning(false)
   }
+}
 
   const toggleTestCasesPanel = () => {
     setIsTestCasesExpanded(!isTestCasesExpanded)
@@ -190,17 +198,17 @@ export default function InterviewPage() {
               </div>
 
               <div className="flex space-x-2">
-                <button
+                {problem && <button
                   className="px-3 py-1 bg-slate-200 text-slate-800 rounded text-sm font-medium hover:bg-slate-300 flex items-center"
-                  onClick={handleRunCode}
+                  onClick={() => problem?.testCases && handleRunCode(problem?.testCases)}
                   disabled={isRunning}
                 >
                   <Play className="h-3 w-3 mr-1" />
                   Run
-                </button>
+                </button>}
                 <button
                   className="px-3 py-1 bg-slate-900 text-white rounded text-sm font-medium hover:bg-slate-800"
-                  onClick={handleSubmit}
+                  onClick={() => handleSubmit}
                   disabled={isRunning}
                 >
                   {isRunning ? "Processing..." : "Submit"}
@@ -214,7 +222,7 @@ export default function InterviewPage() {
             <div id="test-cases-panel" className={`overflow-y-auto transition-all duration-300 ${isTestCasesExpanded ? "h-64" : "h-0"}`}>
               { problem && 
                 (isTestCasesExpanded && 
-                  <TestCases testCases={problem?.testCases} results={testResults} loading={jobLoading} />)
+                  <TestCases testCases={problem?.testCases} results={testResults} loading={jobLoading} running={isRunning} />)
               }
             </div>
           </div>

@@ -1,5 +1,5 @@
-import { TestCasesType } from "@/types"
-import { CheckCircle, ChevronDown, ChevronUp, XCircle } from "lucide-react"
+import { TestCasesType, TestResultType } from "@/types"
+import { CheckCircle, ChevronDown, ChevronUp, Clock, LoaderCircle, XCircle } from "lucide-react"
 import { useState } from "react"
 
 // interface TestCases {
@@ -8,19 +8,20 @@ import { useState } from "react"
 //   explanation: string
 // }
 
-interface TestResult {
-  passed: boolean
-  actualOutput: string
-  error: string
-}
+// interface TestResult {
+//   passed: boolean
+//   actualOutput: string
+//   error: string
+// }
 
 interface TestCasesProps {
   testCases: TestCasesType[]
-  results: TestResult[]
+  results: TestResultType[]
   loading: boolean
+  running: boolean
 }
 
-export default function TestCases({ testCases, results, loading }: TestCasesProps) {
+export default function TestCases({ testCases, results, loading, running }: TestCasesProps) {
 
   const [expandedTestCase, setExpandedTestCase] = useState<number | null>(null)
 
@@ -45,15 +46,20 @@ export default function TestCases({ testCases, results, loading }: TestCasesProp
             >
               <div className="flex items-center">
                 <h4 className="font-medium">Test Case {index + 1}</h4>
-                {result && (
+                {running && (
                   <div className="ml-3 flex items-center">
-                    {result.passed ? (
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                    ) : (
-                      <XCircle className="h-4 w-4 text-red-500" />
-                    )}
+                    <LoaderCircle className="animate-spin" size={24} />
                   </div>
                 )}
+                {result && (
+                    <div className="ml-3 flex items-center">
+                      {result.passed ? (
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                      ) : (
+                        result.status === "Time Limit Exceeded" ? <div className="ml-3 flex items-center gap-x-2"><Clock className="text-yellow-400" />Time Limit Exceeded</div> : <XCircle className="h-4 w-4 text-red-500" />
+                      )}
+                    </div>
+                  )}
               </div>
 
               <div className="flex items-center">
