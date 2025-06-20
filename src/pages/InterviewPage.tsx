@@ -10,11 +10,13 @@ import { useJob } from "@/context/JobContext";
 import { useEditor } from "@/context/EditorContext";
 import { InterviewSkeleton } from "@/components/loader";
 import { TestCasesType, TestResultType } from "@/types";
+import { useToast } from "@/context/ToastContext";
 
 
 export default function InterviewPage() {
 
   const { id } = useParams()
+  const { toast } = useToast()
   if(!id) {
     return;
   }
@@ -208,7 +210,14 @@ export default function InterviewPage() {
                 </button>}
                 <button
                   className="px-3 py-1 bg-slate-900 text-white rounded text-sm font-medium hover:bg-slate-800"
-                  onClick={() => handleSubmit}
+                  onClick={() => {
+                    handleSubmit()
+                    toast({
+                      title: "Sumitted",
+                      description: "You Solution is Submitted.",
+                      duration: 3000
+                    })
+                  }}
                   disabled={isRunning}
                 >
                   {isRunning ? "Processing..." : "Submit"}

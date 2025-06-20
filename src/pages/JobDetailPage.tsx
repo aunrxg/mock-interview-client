@@ -1,5 +1,6 @@
 import { JobDetailSkeleton } from "@/components/loader"
 import { useJob } from "@/context/JobContext"
+import { useToast } from "@/context/ToastContext"
 import { ArrowLeft, Building, Clock, MapPin } from "lucide-react"
 import { useEffect } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -10,6 +11,7 @@ export default function JobDetailPage() {
     const { id } = useParams()
     const navigate = useNavigate()
     const { fetchJobById, jobLoading, job } = useJob()
+    const { toast } = useToast()
 
     const handleSaveJob = () => {
       const existingData = localStorage.getItem("jobs")
@@ -153,7 +155,14 @@ export default function JobDetailPage() {
                         Start Interview
                     </Link>
 
-                    <button onClick={handleSaveJob} className="w-full mt-3 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-2 rounded-md font-medium transition-colors">
+                    <button onClick={() => {
+                      handleSaveJob()
+                      toast({
+                        title: "Saved",
+                        description: "Job saved succefully",
+                        duration: 3000,
+                      })
+                    }} className="w-full mt-3 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-2 rounded-md font-medium transition-colors">
                         Save Job
                     </button>
                     </div>

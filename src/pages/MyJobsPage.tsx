@@ -2,12 +2,14 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { ArrowRight, BookmarkX, Calendar, Search } from "lucide-react"
 import { JobType } from "@/types"
+import { useToast } from "@/context/ToastContext"
 
 export default function MyJobsPage() {
 
   
   const [savedJobs, setSavedJobs] = useState<JobType[]>([])
   const [searchQuery, setSearchQuery] = useState("")
+  const { toast } = useToast()
   // const [statusFilter, setStatusFilter] = useState<string | null>(null)
 
   useEffect(() => {
@@ -150,7 +152,14 @@ export default function MyJobsPage() {
 
                   <div className="flex items-center gap-3 mt-4 md:mt-0">
                     <button
-                      onClick={() => removeInterview(job._id)}
+                      onClick={() => {
+                        removeInterview(job._id)
+                        toast({
+                          title: "Removed",
+                          description: "Removed Job successfully",
+                          duration: 3000,
+                        })
+                      }}
                       className="p-2 text-slate-400 hover:text-red-500 rounded-full hover:bg-slate-100"
                       title="Remove from saved"
                     >

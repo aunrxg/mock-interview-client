@@ -18,6 +18,9 @@ import { AuthProvider } from './context/AuthContext.tsx'
 import { JobProvider } from './context/JobContext.tsx'
 import { SubProvider } from './context/SubmissionContext.tsx'
 import { EditorProvider } from './context/EditorContext.tsx'
+import { ToastViewport } from './components/ui/toast.tsx'
+import { ToastProvider } from './context/ToastContext.tsx'
+// import { ToastProvider } from '@radix-ui/react-toast'
 
 const router = createBrowserRouter([
   {
@@ -53,14 +56,17 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <JobProvider>
-        <SubProvider>
-          <EditorProvider>
-            <RouterProvider router={router} />
-          </EditorProvider>
-        </SubProvider>
-      </JobProvider>
-    </AuthProvider>
+    <ToastProvider>
+      <ToastViewport />
+      <AuthProvider>
+        <JobProvider>
+          <SubProvider>
+            <EditorProvider>
+              <RouterProvider router={router} />
+            </EditorProvider>
+          </SubProvider>
+        </JobProvider>
+      </AuthProvider>
+    </ToastProvider>
   </StrictMode>,
 )

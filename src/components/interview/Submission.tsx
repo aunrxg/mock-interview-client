@@ -23,26 +23,21 @@ export default function Submission({ id, updateTab, setReviewId }: SubmissionPro
     }
   }, [id]);
 
-  if(subLoading){
-    return (
-      <SubmissionSkeleton />
-    ) 
-  } 
-
+  
   const handleViewSubmission = (id: string) => {
     fetchSub(id)
     if(sub) {
       setCode(sub.code)
     }
   }
-
+  
   const handleRequestAiReview = (id: string) => {
     if(id) {
       setReviewId(id)
       updateTab("aiReview")
     }
   }
-
+  
   if(!submissions) {
     return (
       <div className="text-center py-8">
@@ -54,7 +49,13 @@ export default function Submission({ id, updateTab, setReviewId }: SubmissionPro
       </div>
     )
   }
-
+  
+  if(subLoading){
+    return (
+      <SubmissionSkeleton />
+    ) 
+  } 
+  
   return (
     <div>
       <h3 className="font-bold text-lg mb-4">Your Submissions</h3>
